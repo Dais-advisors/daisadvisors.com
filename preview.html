@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAIS Advisors - Tax Comparison Tool FY 2025-26</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--primary:#0E457E;--accent:#10B981;--bg:#f4f7fb}
+*{box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+body{margin:0;background:var(--bg)}
+.hero{background:linear-gradient(135deg,#0E457E,#1f5ea0);color:#fff;padding:30px 20px;text-align:center}
+.logo{width:70px;height:70px;margin:auto;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#0E457E;font-weight:bold}
+.container{max-width:900px;margin:20px auto;padding:15px}
+.card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 18px rgba(0,0,0,.08);margin-bottom:20px}
+input{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-top:6px}
+label{display:block;margin:10px 0;font-weight:600}
+button{background:var(--primary);color:#fff;border:none;padding:14px 18px;border-radius:10px;cursor:pointer}
+.btn-green{background:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.result{display:none}
+.highlight{font-size:24px;font-weight:700;color:var(--accent)}
+.float-wa{position:fixed;right:20px;bottom:20px;background:#25D366;color:#fff;padding:15px;border-radius:50%;text-decoration:none;font-size:22px}
+</style>
+</head>
+<body>
+<div class="hero">
+<div class="logo">DAIS</div>
+<h1>DAIS ADVISORS PRIVATE LIMITED</h1>
+<h2>Compare Your Tax in 30 Seconds</h2>
+<p>FY 2025-26 | Old Regime vs New Regime</p>
+</div>
+
+<div class="container">
+<div class="card" id="leadCard">
+<h3>Your Details</h3>
+<label>Name<input id="name"></label>
+<label>Mobile<input id="mobile"></label>
+<label>Email<input id="email"></label>
+<button onclick="startCalc()">Continue</button>
+</div>
+
+<div class="card" id="calcCard" style="display:none">
+<h3>Tax Calculator</h3>
+<label>Gross Annual Salary<input type="number" id="salary" value="0"></label>
+<label>HRA Exemption<input type="number" id="hra" value="0"></label>
+<label>80C Investment<input type="number" id="c80c" value="0"></label>
+<label>80D Medical Insurance<input type="number" id="c80d" value="0"></label>
+<label>NPS u/s 80CCD(1B)<input type="number" id="nps" value="0"></label>
+<label>Home Loan Interest<input type="number" id="home" value="0"></label>
+<label>Other Deductions<input type="number" id="other" value="0"></label>
+<button onclick="calculate()">Compare Tax</button>
+</div>
+
+<div class="card result" id="result">
+<h3>Tax Comparison</h3>
+<div class="grid">
+<div>
+<h4>Old Regime</h4>
+<p>Taxable Income: ₹<span id="oldIncome"></span></p>
+<p>Tax: ₹<span id="oldTax"></span></p>
+</div>
+<div>
+<h4>New Regime</h4>
+<p>Taxable Income: ₹<span id="newIncome"></span></p>
+<p>Tax: ₹<span id="newTax"></span></p>
+</div>
+</div>
+<p class="highlight" id="saving"></p>
+<p id="recommend"></p>
+<button class="btn-green" onclick="downloadPDF()">Download PDF Report</button>
+</div>
+</div>
+
+<a class="float-wa" href="https://wa.me/918529081017">💬</a>
+
+<script>
+function startCalc(){
+if(!name.value || !mobile.value){alert('Name and Mobile required');return;}
+localStorage.setItem('clientName',name.value);
+document.getElementById('leadCard').style.display='none';
+document.getElementById('calcCard').style.display='block';
+}
+
+function oldTaxCalc(i){
+let t=0;
+if(i<=250000)t=0;
+else if(i<=500000)t=(i-250000)*0.05;
+else if(i<=1000000)t=12500+(i-500000)*0.20;
+else t=112500+(i-1000000)*0.30;
+if(i<=500000)t=Math.max(0,t-12500);
+return Math.round(t*1.04);
+}
+
+function newTaxCalc(i){
+let tax=0;
+let slabs=[[400000,0],[800000,.05],[1200000,.10],[1600000,.15],[2000000,.20],[2400000,.25],[999999999,.30]];
+let prev=0;
+for(let s of slabs){
+if(i>s[0]){tax+=(s[0]-prev)*s[1]; prev=s[0];}
+else {tax+=(i-prev)*s[1]; break;}
+}
+if(i<=1200000) tax=0;
+else tax=Math.min(tax,i-1200000);
+return Math.round(tax*1.04);
+}
+
+function calculate(){
+let sal=+salary.value||0;
+let c80=Math.min(+c80c.value||0,150000);
+let n=Math.min(+nps.value||0,50000);
+let h=Math.min(+home.value||0,200000);
+
+let oldIncome=Math.max(0,sal-50000-(+hra.value||0)-c80-(+c80d.value||0)-n-h-(+other.value||0));
+let newIncome=Math.max(0,sal-75000);
+
+let oldTax=oldTaxCalc(oldIncome);
+let newTax=newTaxCalc(newIncome);
+
+oldIncomeSpan=oldIncome.toLocaleString('en-IN');
+newIncomeSpan=newIncome.toLocaleString('en-IN');
+
+document.getElementById('oldIncome').innerText=oldIncomeSpan;
+document.getElementById('newIncome').innerText=newIncomeSpan;
+document.getElementById('oldTax').innerText=oldTax.toLocaleString('en-IN');
+document.getElementById('newTax').innerText=newTax.toLocaleString('en-IN');
+
+let save=Math.abs(oldTax-newTax);
+let rec=(oldTax<newTax)?'Old Regime Recommended':'New Regime Recommended';
+document.getElementById('saving').innerText='Potential Tax Saving ₹'+save.toLocaleString('en-IN');
+document.getElementById('recommend').innerText=rec;
+
+document.getElementById('result').style.display='block';
+}
+
+async function downloadPDF(){
+const {jsPDF}=window.jspdf;
+const doc=new jsPDF();
+doc.setFontSize(18);
+doc.text('DAIS ADVISORS PRIVATE LIMITED',20,20);
+doc.setFontSize(12);
+doc.text('Income Tax Comparison Report FY 2025-26',20,30);
+doc.text('Client: '+localStorage.getItem('clientName'),20,45);
+doc.text('Old Tax: ₹'+document.getElementById('oldTax').innerText,20,60);
+doc.text('New Tax: ₹'+document.getElementById('newTax').innerText,20,70);
+doc.text(document.getElementById('recommend').innerText,20,85);
+doc.save('Tax_Report_'+(localStorage.getItem('clientName')||'Client')+'.pdf');
+}
+</script>
+</body>
+</html>
