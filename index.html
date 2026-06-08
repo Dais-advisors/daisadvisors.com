@@ -38,7 +38,7 @@ button{background:var(--primary);color:#fff;border:none;padding:14px 18px;border
 <label>Name<input id="name"></label>
 <label>Mobile<input id="mobile"></label>
 <label>Email<input id="email"></label>
-<button id="continueBtn">Continue</button>
+<button onclick="startCalc()">Continue</button>
 </div>
 
 <div class="card" id="calcCard" style="display:none">
@@ -130,12 +130,12 @@ return Math.round(tax*1.04);
 }
 
 function calculate(){
-let sal=+salary.value||0;
-let c80=Math.min(+c80c.value||0,150000);
-let n=Math.min(+nps.value||0,50000);
-let h=Math.min(+home.value||0,200000);
+let sal=+document.getElementById('salary').value||0;
+let c80=Math.min(+document.getElementById('c80c').value||0,150000);
+let n=Math.min(+document.getElementById('nps').value||0,50000);
+let h=Math.min(+document.getElementById('home').value||0,200000);
 
-let oldIncome=Math.max(0,sal-50000-(+hra.value||0)-c80-(+c80d.value||0)-n-h-(+other.value||0));
+let oldIncome=Math.max(0,sal-50000-(+document.getElementById('hra').value||0)-c80-(+document.getElementById('c80d').value||0)-n-h-(+document.getElementById('other').value||0));
 let newIncome=Math.max(0,sal-75000);
 
 let oldTax=oldTaxCalc(oldIncome);
