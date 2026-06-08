@@ -77,10 +77,33 @@ button{background:var(--primary);color:#fff;border:none;padding:14px 18px;border
 
 <script>
 function startCalc(){
-if(!name.value || !mobile.value){alert('Name and Mobile required');return;}
-localStorage.setItem('clientName',name.value);
-document.getElementById('leadCard').style.display='none';
-document.getElementById('calcCard').style.display='block';
+
+const clientName =
+document.getElementById('name').value.trim();
+
+const clientMobile =
+document.getElementById('mobile').value.trim();
+
+const clientEmail =
+document.getElementById('email').value.trim();
+
+if(clientName === ""){
+    alert("Please enter your name");
+    return;
+}
+
+if(clientMobile.length < 10){
+    alert("Please enter a valid mobile number");
+    return;
+}
+
+localStorage.setItem("clientName", clientName);
+localStorage.setItem("clientMobile", clientMobile);
+localStorage.setItem("clientEmail", clientEmail);
+
+document.getElementById("leadCard").style.display="none";
+document.getElementById("calcCard").style.display="block";
+
 }
 
 function oldTaxCalc(i){
