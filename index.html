@@ -957,19 +957,27 @@ const CA_WA      = "918529081017";             // ← WhatsApp number (no +, no 
 // Populate CA details
 document.querySelectorAll('[id$="-ca-name"], [id="contact-ca-name"]').forEach(el => el.textContent = CA_NAME);
 document.querySelectorAll('[id$="-ca-phone"], [id="contact-ca-phone"]').forEach(el => el.textContent = "📞 " + CA_PHONE);
-// Wire all WhatsApp buttons
-const waUrl = `https://wa.me/${CA_WA}?text=Hi%2C%20I%20used%20your%20Tax%20Comparison%20Tool%20and%20need%20help%20with%20my%20ITR.`;
-const telUrl = `tel:${CA_PHONE}`;
+
+// Clean phone for tel: link (remove spaces, dashes, brackets)
+const cleanPhone = CA_PHONE.replace(/[\s\-().]/g, '');
+const telUrl = `tel:${cleanPhone}`;
+const waUrl  = `https://api.whatsapp.com/send?phone=${CA_WA}&text=Hi%2C%20I%20used%20your%20Tax%20Comparison%20Tool%20and%20need%20help%20with%20my%20ITR.`;
+
+// Wire all buttons
 ['wa-btn-result','wa-btn-contact','sticky-wa'].forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.href = waUrl;
+  if (el) { el.href = waUrl; el.removeAttribute('target'); }
 });
 ['call-btn-result','call-btn','sticky-call'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.href = telUrl;
 });
 
-// ── NAVIGATION ────────────────────────────────────────────────
+// ── MOBILE-SAFE CONTACT HELPERS ──────────────────────────────
+let currentWaUrl = waUrl;
+function openWA()   { window.location.href = currentWaUrl; }
+function openCall() { window.location.href = telUrl; }
+
 function showSection(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById('sec-' + id).classList.add('active');
@@ -1174,9 +1182,11 @@ function renderResults(r) {
 
   // Update WA message with result
   const waMsg = encodeURIComponent(`Hi ${CA_NAME}, I used your Tax Comparison Tool.\n\nGross Income: ${fmt(r.grossIncome)}\nOld Regime Tax: ${fmt(r.totalOldTax)}\nNew Regime Tax: ${fmt(r.totalNewTax)}\nRecommended: ${r.totalNewTax <= r.totalOldTax ? 'New Regime' : 'Old Regime'}\n\nI need help filing my ITR. Please contact me.`);
+  const updatedWa = `https://api.whatsapp.com/send?phone=${CA_WA}&text=${waMsg}`;
+  currentWaUrl = updatedWa;
   ['wa-btn-result','wa-btn-contact','sticky-wa'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.href = `https://wa.me/${CA_WA}?text=${waMsg}`;
+    if (el) el.href = updatedWa;
   });
 
   document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1301,8 +1311,8 @@ function submitLead() {
 </script>
 <!-- STICKY BOTTOM BAR — always visible -->
 <div class="sticky-bar">
-  <a id="sticky-wa" href="#" class="sticky-wa" target="_blank">💬 WhatsApp Us</a>
-  <a id="sticky-call" href="#" class="sticky-call">📞 Call Now</a>
+  <a id="sticky-wa" href="javascript:void(0)" onclick="openWA()" class="sticky-wa">💬 WhatsApp Us</a>
+  <a id="sticky-call" href="javascript:void(0)" onclick="openCall()" class="sticky-call">📞 Call Now</a>
 </div>
 
 </body>
