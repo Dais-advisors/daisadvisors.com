@@ -949,7 +949,7 @@ body {
 
 <script>
 // ── CONFIG — UPDATE THESE ─────────────────────────────────────
-const CA_NAME    = "CA Ankit Chaturvedi";           // ← Change this
+const CA_NAME    = "Team of Expert CA & CS";           // ← Change this
 const CA_PHONE   = "+91-8529081017";           // ← Change this
 const CA_WA      = "918529081017";             // ← WhatsApp number (no +, no spaces)
 // ─────────────────────────────────────────────────────────────
@@ -957,8 +957,17 @@ const CA_WA      = "918529081017";             // ← WhatsApp number (no +, no 
 // Populate CA details
 document.querySelectorAll('[id$="-ca-name"], [id="contact-ca-name"]').forEach(el => el.textContent = CA_NAME);
 document.querySelectorAll('[id$="-ca-phone"], [id="contact-ca-phone"]').forEach(el => el.textContent = "📞 " + CA_PHONE);
-document.querySelectorAll('[id^="wa-btn"], #sticky-wa').forEach(el => el.href = `https://wa.me/${CA_WA}?text=Hi%2C%20I%20used%20your%20Tax%20Comparison%20Tool%20and%20need%20help%20with%20my%20ITR.`);
-document.querySelectorAll('[id^="call-btn"], #sticky-call').forEach(el => el.href = `tel:${CA_PHONE}`);
+// Wire all WhatsApp buttons
+const waUrl = `https://wa.me/${CA_WA}?text=Hi%2C%20I%20used%20your%20Tax%20Comparison%20Tool%20and%20need%20help%20with%20my%20ITR.`;
+const telUrl = `tel:${CA_PHONE}`;
+['wa-btn-result','wa-btn-contact','sticky-wa'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.href = waUrl;
+});
+['call-btn-result','call-btn','sticky-call'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.href = telUrl;
+});
 
 // ── NAVIGATION ────────────────────────────────────────────────
 function showSection(id) {
@@ -1165,7 +1174,10 @@ function renderResults(r) {
 
   // Update WA message with result
   const waMsg = encodeURIComponent(`Hi ${CA_NAME}, I used your Tax Comparison Tool.\n\nGross Income: ${fmt(r.grossIncome)}\nOld Regime Tax: ${fmt(r.totalOldTax)}\nNew Regime Tax: ${fmt(r.totalNewTax)}\nRecommended: ${r.totalNewTax <= r.totalOldTax ? 'New Regime' : 'Old Regime'}\n\nI need help filing my ITR. Please contact me.`);
-  document.getElementById('wa-btn-result').href = `https://wa.me/${CA_WA}?text=${waMsg}`;
+  ['wa-btn-result','wa-btn-contact','sticky-wa'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = `https://wa.me/${CA_WA}?text=${waMsg}`;
+  });
 
   document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
