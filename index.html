@@ -111,6 +111,8 @@ body {
   gap: 8px;
   margin-top: 18px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 201;
 }
 .hero-tab {
   background: rgba(255,255,255,0.1);
@@ -793,7 +795,7 @@ body {
         <div class="ca-phone" id="cta-ca-phone">📞 +91-XXXXXXXXXX</div>
       </div>
       <div class="cta-btn-row">
-        <a id="wa-btn-result" href="#" class="btn btn-wa" target="_blank">💬 WhatsApp Now</a>
+        <a id="wa-btn-result" href="javascript:void(0)" onclick="openWA()" class="btn btn-wa">💬 WhatsApp Now</a>
         <a id="call-btn-result" href="#" class="btn btn-gold">📞 Call Now</a>
       </div>
     </div>
@@ -912,7 +914,7 @@ body {
       <div class="ca-phone" id="contact-ca-phone">📞 +91-XXXXXXXXXX</div>
     </div>
     <div class="cta-btn-row">
-      <a id="wa-btn-contact" href="#" class="btn btn-wa" target="_blank">💬 WhatsApp</a>
+      <a id="wa-btn-contact" href="javascript:void(0)" onclick="openWA()" class="btn btn-wa">💬 WhatsApp</a>
       <a id="call-btn" href="#" class="btn btn-gold">📞 Call Now</a>
     </div>
   </div>
@@ -949,9 +951,9 @@ body {
 
 <script>
 // ── CONFIG — UPDATE THESE ─────────────────────────────────────
-const CA_NAME    = "Team of Expert CA & CS";           // ← Change this
-const CA_PHONE   = "+91-8529081017";           // ← Change this
-const CA_WA      = "918529081017";             // ← WhatsApp number (no +, no spaces)
+const CA_NAME    = "CA / CS Ankit";           // ← Change this
+const CA_PHONE   = "+91-XXXXXXXXXX";           // ← Change this
+const CA_WA      = "91XXXXXXXXXX";             // ← WhatsApp number (no +, no spaces)
 // ─────────────────────────────────────────────────────────────
 
 // Populate CA details
