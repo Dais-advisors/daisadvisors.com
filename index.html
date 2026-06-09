@@ -796,7 +796,7 @@ body {
       </div>
       <div class="cta-btn-row">
         <a id="wa-btn-result" href="javascript:void(0)" onclick="openWA()" class="btn btn-wa">💬 WhatsApp Now</a>
-        <a id="call-btn-result" href="#" class="btn btn-gold">📞 Call Now</a>
+        <a id="call-btn-result" href="javascript:void(0)" onclick="openCall()" class="btn btn-gold">📞 Call Now</a>
       </div>
     </div>
 
@@ -915,7 +915,8 @@ body {
     </div>
     <div class="cta-btn-row">
       <a id="wa-btn-contact" href="javascript:void(0)" onclick="openWA()" class="btn btn-wa">💬 WhatsApp</a>
-      <a id="call-btn" href="#" class="btn btn-gold">📞 Call Now</a>
+      <a id="call-btn" href="javascript:void(0)" onclick="openCall()" class="btn btn-gold">📞 Call Now</a>
+      <a id="email-btn" href="mailto:office@daisadvisors.com" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.4);">✉️ Email Us</a>
     </div>
   </div>
 
@@ -951,9 +952,11 @@ body {
 
 <script>
 // ── CONFIG — UPDATE THESE ─────────────────────────────────────
-const CA_NAME    = "CA / CS Ankit";           // ← Change this
-const CA_PHONE   = "+91-XXXXXXXXXX";           // ← Change this
-const CA_WA      = "91XXXXXXXXXX";             // ← WhatsApp number (no +, no spaces)
+const CA_NAME    = "Team of Expert CA & CS";
+const CA_PHONE   = "+91-8529081017";
+const CA_WA      = "918529081017";
+const CA_EMAIL   = "office@daisadvisors.com";
+document.getElementById('email-btn').href = `mailto:${CA_EMAIL}`;
 // ─────────────────────────────────────────────────────────────
 
 // Populate CA details
