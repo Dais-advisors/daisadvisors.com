@@ -2,1323 +2,1214 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tax Regime Comparison Tool | DAIS Advisors</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="description" content="DAIS Advisors - Professional ITR Filing Services FY 2025-26">
+<title>ITR Filing FY 2025-26 | DAIS Advisors</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold: #FFC000;
-  --gold-light: #FFD84D;
-  --gold-dark: #CC9A00;
-  --navy: #053D70;
-  --navy-light: #0A5FA0;
-  --navy-dark: #032A4E;
-  --cream: #FAF8F3;
-  --white: #FFFFFF;
-  --text: #1A1A2E;
-  --muted: #6B7280;
-  --border: #E5DDD0;
-  --success: #16A34A;
-  --warn: #D97706;
-  --red: #DC2626;
-  --card-shadow: 0 4px 24px rgba(5,61,112,0.10);
+/* ─── TOKENS ─── */
+:root{
+  --navy:#053D70;--navy-d:#032A4E;--navy-m:#0A5FA0;
+  --gold:#FFC000;--gold-d:#CC9A00;
+  --blue:#2563EB;--blue-l:#EFF6FF;
+  --green:#16A34A;--green-l:#F0FDF4;
+  --amber:#F59E0B;--amber-l:#FFFBEB;
+  --red:#DC2626;--red-l:#FEF2F2;
+  --white:#fff;--cream:#FAFAF8;
+  --text:#111827;--muted:#6B7280;--border:#E5E7EB;
+  --sh:0 4px 20px rgba(5,61,112,.10);
+  --sh2:0 12px 40px rgba(5,61,112,.16);
+  --r:14px;--r2:8px
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+/* ─── RESET ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:var(--white);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+ul{list-style:none}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
-  color: var(--text);
-  min-height: 100vh;
-}
+/* ─── LAYOUT ─── */
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
 
-/* ── HEADER ── */
-.header {
-  background: var(--navy);
-  padding: 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 20px rgba(5,61,112,0.3);
+/* ─── NAV (two rows, fully sticky) ─── */
+.nav{
+  position:sticky;top:0;z-index:600;
+  background:var(--navy-d);
+  box-shadow:0 4px 24px rgba(3,42,78,.45)
 }
-.header-inner {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  justify-content: space-between;
+/* Row 1 */
+.nav-row1{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;max-width:1080px;margin:0 auto;gap:12px
 }
-.brand-wrap { flex: 1; }
-.brand-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.08em;
-  line-height: 1;
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand svg{width:30px;height:30px;flex-shrink:0}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:.06em;line-height:1.1}
+.brand-sub{font-size:8px;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase}
+.nav-fy{background:var(--gold);color:var(--navy-d);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.nav-phone{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:#fff;padding:6px 14px;border-radius:20px;
+  font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0
 }
-.brand-sub {
-  font-size: 9px;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-.fy-badge {
-  background: var(--gold);
-  color: var(--navy);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 20px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
+.nav-phone:hover{background:rgba(255,255,255,.16)}
 
-/* ── HERO STRIP ── */
-.hero {
-  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-light) 100%);
-  padding: 28px 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.header-actions{display:flex;align-items:center;gap:10px}
+.nav-whatsapp{
+display:flex;
+align-items:center;
+gap:6px;
+background:#25D366;
+color:#fff;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+white-space:nowrap;
+flex-shrink:0;
+transition:.2s;
 }
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -40px; right: -40px;
-  width: 200px; height: 200px;
-  background: var(--gold);
-  opacity: 0.06;
-  border-radius: 50%;
-}
-.hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 6px;
-}
-.hero p { font-size: 14px; color: rgba(255,255,255,0.7); }
-.hero-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 18px;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 201;
-}
-.hero-tab {
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.8);
-  border: 1px solid rgba(255,255,255,0.2);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.hero-tab.active, .hero-tab:hover {
-  background: var(--gold);
-  color: var(--navy);
-  border-color: var(--gold);
-  font-weight: 600;
-}
+.nav-whatsapp:hover{background:#1ebe5d;transform:translateY(-1px)}
 
-/* ── MAIN ── */
-.main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 24px 16px 60px;
-}
 
-/* ── SECTION ── */
-.section { display: none; }
-.section.active { display: block; }
+/* Row 2 — Tab navigation */
+.nav-row2{
+  display:flex;align-items:stretch;
+  border-top:1px solid rgba(255,255,255,.1);
+  max-width:100%;
+  flex-wrap:nowrap
+}
+.tabs-scroll{
+  display:flex;flex:1;overflow-x:auto;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  padding:0 10px
+}
+.tabs-scroll::-webkit-scrollbar{display:none}
+.tab-btn{
+  flex-shrink:0;
+  display:flex;align-items:center;gap:6px;
+  padding:11px 15px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.65);
+  background:none;border:none;border-bottom:3px solid transparent;
+  cursor:pointer;white-space:nowrap;
+  position:relative;bottom:-2px;
+  transition:color .2s,background .2s,border-color .2s;
+  -webkit-tap-highlight-color:transparent
+}
+.tab-btn:hover{color:rgba(255,255,255,.95);background:rgba(255,255,255,.06);border-bottom-color:rgba(255,192,0,.4)}
+.tab-btn.active{color:#fff;font-weight:700;border-bottom-color:var(--gold);background:rgba(255,192,0,.1)}
+.t-num{
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,.15);color:rgba(255,255,255,.75);
+  font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:.2s
+}
+.tab-btn.active .t-num{background:var(--gold);color:var(--navy-d);box-shadow:0 0 8px rgba(255,192,0,.5)}
+.tabs-cta-wrap{
+  display:flex;align-items:center;
+  padding:6px 14px 6px 10px;
+  flex-shrink:0;
+  border-left:1px solid rgba(255,255,255,.12)
+}
+.tabs-cta-btn{
+  display:flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#FFD04D,#FFC000);
+  color:var(--navy-d);border:none;
+  padding:8px 16px;border-radius:var(--r2);
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;white-space:nowrap;
+  box-shadow:0 2px 12px rgba(255,192,0,.4);
+  transition:.2s;-webkit-tap-highlight-color:transparent
+}
+.tabs-cta-btn:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(255,192,0,.55)}
+.tabs-cta-btn:active{transform:scale(.97)}
 
-/* ── CARD ── */
-.card {
-  background: var(--white);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-.card-header {
-  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 100%);
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.card-header h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--white);
-}
-.card-icon {
-  width: 28px; height: 28px;
-  background: var(--gold);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-.card-body { padding: 20px; }
+/* Progress bar */
+.prog{height:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--navy-m));transition:width .45s ease}
 
-/* ── FORM FIELDS ── */
-.field-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+/* ─── BUTTONS ─── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 22px;border-radius:var(--r2);
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  border:none;cursor:pointer;white-space:nowrap;text-decoration:none;
+  transition:.2s;-webkit-tap-highlight-color:transparent
 }
-@media(max-width:600px){ .field-grid { grid-template-columns: 1fr; } }
+.btn:active{transform:scale(.97)}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy-d);transform:translateY(-1px)}
+.btn-gold{background:var(--gold);color:var(--navy-d)}.btn-gold:hover{background:var(--gold-d);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4)}.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.btn-outline{background:transparent;color:var(--navy);border:2px solid var(--navy)}.btn-outline:hover{background:var(--navy);color:#fff}
+.btn-lg{padding:13px 28px;font-size:15px}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-full{width:100%;justify-content:center}
 
-.field { display: flex; flex-direction: column; gap: 5px; }
-.field label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--navy);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+/* ─── HERO ─── */
+.hero{
+  background:linear-gradient(140deg,var(--navy-d) 0%,var(--navy) 55%,var(--navy-m) 100%);
+  padding:52px 0 48px;position:relative;overflow:hidden
 }
-.field input, .field select {
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: var(--text);
-  background: var(--cream);
-  transition: border-color 0.2s;
-  outline: none;
-}
-.field input:focus, .field select:focus {
-  border-color: var(--gold);
-  background: var(--white);
-}
-.field-hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.hero::after{content:'';position:absolute;bottom:-80px;right:-80px;width:320px;height:320px;background:var(--gold);opacity:.07;border-radius:50%;filter:blur(70px);pointer-events:none}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 360px;gap:40px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,192,0,.12);border:1px solid rgba(255,192,0,.3);color:var(--gold);font-size:11px;font-weight:600;padding:4px 13px;border-radius:20px;margin-bottom:16px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,5vw,54px);font-weight:700;color:#fff;line-height:1.1;margin-bottom:10px}
+.hero-title span{color:var(--gold)}
+.hero-desc{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:28px;line-height:1.8;max-width:460px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap}
+.s-num{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--gold);line-height:1}
+.s-lbl{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.05em;margin-top:2px}
+.hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:24px}
+.hc-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:14px}
+.hc-list{display:flex;flex-direction:column;gap:9px}
+.hc-item{display:flex;align-items:center;gap:9px;font-size:13px;color:rgba(255,255,255,.82)}
+.hc-dot{width:18px;height:18px;background:rgba(22,163,74,.25);border:1px solid rgba(74,222,128,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#4ADE80;flex-shrink:0}
+.hero-due{margin-top:18px;padding:11px 14px;background:rgba(255,192,0,.1);border:1px solid rgba(255,192,0,.25);border-radius:var(--r2);display:flex;align-items:center;gap:10px}
+.due-t{font-size:13px;color:var(--gold);font-weight:600}
+.due-s{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
 
-.section-divider {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold-dark);
-  padding: 12px 0 6px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 12px;
-  grid-column: 1/-1;
-}
+/* ─── SECTION BASE ─── */
+.sec{padding:52px 0}
+.sec-head{text-align:center;margin-bottom:36px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.sec-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,38px);font-weight:700;color:var(--navy-d);margin:7px 0 4px}
+.sec-head p{font-size:14px;color:var(--muted);max-width:540px;margin:8px auto 0;line-height:1.75}
+.gold-rule{width:42px;height:3px;background:var(--gold);border-radius:2px;margin:10px auto 0}
 
-/* ── BUTTONS ── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s;
-  text-decoration: none;
-}
-.btn-primary {
-  background: var(--navy);
-  color: var(--white);
-}
-.btn-primary:hover { background: var(--navy-dark); transform: translateY(-1px); }
-.btn-gold {
-  background: var(--gold);
-  color: var(--navy);
-}
-.btn-gold:hover { background: var(--gold-dark); transform: translateY(-1px); }
-.btn-outline {
-  background: transparent;
-  color: var(--navy);
-  border: 2px solid var(--navy);
-}
-.btn-outline:hover { background: var(--navy); color: var(--white); }
-.btn-wa {
-  background: #25D366;
-  color: var(--white);
-}
-.btn-wa:hover { background: #128C7E; }
-.btn-full { width: 100%; }
-.btn-sm { padding: 8px 16px; font-size: 13px; }
+/* ─── TAB 1: WHO NEEDS ITR ─── */
+.t1-bg{background:var(--cream)}
+.mand-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.mc{border-radius:var(--r);padding:20px;border:1.5px solid}
+.mc.mand{background:linear-gradient(135deg,#FEF2F2,#fff);border-color:#FCA5A5}
+.mc.rec{background:linear-gradient(135deg,#F0FDF4,#fff);border-color:#86EFAC}
+.mc-head{display:flex;align-items:center;gap:9px;margin-bottom:13px}
+.mc-head h3{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700}
+.mand .mc-head h3{color:var(--red)}.rec .mc-head h3{color:var(--green)}
+.mc-list li{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:#374151;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+.mc-list li:last-child{border:none}
+.mc-dot{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;flex-shrink:0;margin-top:2px}
+.mand .mc-dot{background:var(--red)}.rec .mc-dot{background:var(--green)}
+.thresh-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:24px}
+.thresh-hdr{background:var(--navy);color:#fff;padding:13px 18px;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.tt{width:100%;border-collapse:collapse;font-size:12.5px}
+.tt th{background:var(--navy-d);color:rgba(255,255,255,.8);padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tt td{padding:9px 12px;border-bottom:1px solid var(--border)}
+.tt tr:last-child td{border:none}
+.tt tr:nth-child(even) td{background:var(--cream)}
+.bm{background:#FEE2E2;color:var(--red);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.br{background:#DCFCE7;color:var(--green);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.ben-item{background:#fff;border:1px solid var(--border);border-radius:var(--r2);padding:14px 13px;display:flex;align-items:flex-start;gap:9px;transition:.2s}
+.ben-item:hover{box-shadow:var(--sh);border-color:var(--gold)}
+.ben-icon{font-size:20px;flex-shrink:0}
+.ben-text h4{font-size:13px;font-weight:700;color:var(--navy-d);margin-bottom:2px}
+.ben-text p{font-size:11px;color:var(--muted);line-height:1.5}
 
-.calc-btn-row {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
+/* ─── TAB 2: SERVICES ─── */
+.t2-bg{background:var(--cream)}
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.cat-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);border:1px solid var(--border);overflow:hidden;transition:.25s;display:flex;flex-direction:column}
+.cat-card:hover{transform:translateY(-5px);box-shadow:var(--sh2)}
+.cat-top{padding:18px 18px 13px;border-bottom:1px solid var(--border);position:relative}
+.cat-stripe{position:absolute;top:0;left:0;right:0;height:4px}
+.cat-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;margin:7px 0 10px}
+.cat-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--navy-d);margin-bottom:9px}
+.for-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.for-list li{font-size:11.5px;color:var(--muted);padding:2px 0 2px 10px;position:relative}
+.for-list li::before{content:"·";position:absolute;left:2px}
+.cat-body{padding:14px 18px;flex:1;display:flex;flex-direction:column}
+.inc-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.inc-list li{display:flex;align-items:center;gap:7px;font-size:12.5px;padding:3px 0}
+.c-tick{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;flex-shrink:0}
+.cat-btns{display:flex;gap:8px;margin-top:auto;padding-top:14px}
+.cat-btns .btn{flex:1;font-size:12px;padding:9px 8px}
+.tb .cat-stripe{background:var(--blue)}.tb .cat-icon{background:var(--blue-l)}.tb .c-tick{background:var(--blue)}.tb .btn-f{background:var(--blue);color:#fff}.tb .btn-o{color:var(--blue);border:1.5px solid var(--blue)}.tb .btn-o:hover{background:var(--blue);color:#fff}
+.tg .cat-stripe{background:var(--green)}.tg .cat-icon{background:var(--green-l)}.tg .c-tick{background:var(--green)}.tg .btn-f{background:var(--green);color:#fff}.tg .btn-o{color:var(--green);border:1.5px solid var(--green)}.tg .btn-o:hover{background:var(--green);color:#fff}
+.ta .cat-stripe{background:var(--amber)}.ta .cat-icon{background:var(--amber-l)}.ta .c-tick{background:var(--amber)}.ta .btn-f{background:var(--amber);color:var(--navy-d)}.ta .btn-o{color:var(--amber);border:1.5px solid var(--amber)}.ta .btn-o:hover{background:var(--amber);color:var(--navy-d)}
+.tr .cat-stripe{background:var(--red)}.tr .cat-icon{background:var(--red-l)}.tr .c-tick{background:var(--red)}.tr .btn-f{background:var(--red);color:#fff}.tr .btn-o{color:var(--red);border:1.5px solid var(--red)}.tr .btn-o:hover{background:var(--red);color:#fff}
+.cta-strip{background:linear-gradient(135deg,var(--blue) 0%,#1D4ED8 100%);border-radius:var(--r);padding:38px 24px;text-align:center;margin-top:32px}
+.cta-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,4vw,30px);font-weight:700;color:#fff;margin:6px 0 10px}
+.cta-strip p{font-size:13px;color:rgba(255,255,255,.72);max-width:460px;margin:0 auto 22px;line-height:1.75}
 
-/* ── RESULT SECTION ── */
-.result-banner {
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.result-banner.new-wins {
-  background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
-  border: 2px solid #6EE7B7;
-}
-.result-banner.old-wins {
-  background: linear-gradient(135deg, #FFF7ED, #FED7AA);
-  border: 2px solid #FDBA74;
-}
-.result-banner h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.result-banner .saving-amount {
-  font-size: 32px;
-  font-weight: 700;
-  font-family: 'Cormorant Garamond', serif;
-}
-.new-wins .saving-amount { color: var(--success); }
-.old-wins .saving-amount { color: var(--warn); }
+/* ─── TAB 3: INCLUDED ─── */
+.t3-bg{background:var(--navy-d)}
+.t3-bg .sec-head h2{color:#fff}
+.t3-bg .sec-head p{color:rgba(255,255,255,.5)}
+.t3-bg .eyebrow{color:var(--gold)}
+.inc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.inc-item{display:flex;align-items:center;gap:9px;padding:13px 15px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r2);font-size:13px;color:rgba(255,255,255,.85);font-weight:500;transition:.2s}
+.inc-item:hover{background:rgba(255,255,255,.09)}
+.i-tick{width:19px;height:19px;background:rgba(22,163,74,.2);border:1px solid rgba(74,222,128,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#4ADE80;flex-shrink:0}
+.addl-sec{margin-top:32px}
+.addl-sec h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:#fff;margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:6px 13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:20px;font-size:12px;color:rgba(255,255,255,.8);transition:.2s;cursor:default}
+.tag:hover{background:rgba(255,192,0,.14);border-color:rgba(255,192,0,.38);color:var(--gold)}
+.addl-note{font-size:12px;color:rgba(255,255,255,.4);padding:11px 15px;background:rgba(255,255,255,.04);border-radius:var(--r2);border-left:3px solid var(--amber)}
 
-.regime-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-@media(max-width:500px){ .regime-cards { grid-template-columns: 1fr; } }
+/* ─── TAB 4: WHY US ─── */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.why-item{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:20px 16px;display:flex;align-items:flex-start;gap:12px;transition:.2s}
+.why-item:hover{box-shadow:var(--sh);border-color:rgba(5,61,112,.2);transform:translateY(-3px)}
+.why-icon{font-size:22px;width:42px;height:42px;background:var(--cream);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-text h3{font-size:13px;font-weight:700;color:var(--navy-d);margin-bottom:3px}
+.why-text p{font-size:12px;color:var(--muted);line-height:1.6}
 
-.regime-card {
-  border-radius: 10px;
-  padding: 18px;
-  text-align: center;
-  border: 2px solid transparent;
-}
-.regime-card.winner {
-  border-color: var(--gold);
-  background: linear-gradient(135deg, #FFF9E6, #FFFBF0);
-  position: relative;
-}
-.regime-card.winner::before {
-  content: '★ RECOMMENDED';
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--gold);
-  color: var(--navy);
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 10px;
-  border-radius: 10px;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
-.regime-card.loser {
-  background: #F9FAFB;
-  border-color: var(--border);
-}
-.regime-card h3 {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.winner h3 { color: var(--navy); }
-.loser h3 { color: var(--muted); }
-.regime-tax {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.winner .regime-tax { color: var(--navy); }
-.loser .regime-tax { color: var(--muted); }
-.regime-eff { font-size: 12px; color: var(--muted); }
+/* ─── TAB 5: CONTACT ─── */
+.contact-grid{display:grid;grid-template-columns:1fr;max-width:600px;margin:0 auto}
+.ci-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--navy-d);margin-bottom:6px}
+.ci-desc{font-size:14px;color:var(--muted);margin-bottom:22px;line-height:1.75}
+.ci-list{display:flex;flex-direction:column;gap:11px;margin-bottom:20px}
+.ci-item{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--cream);border:1px solid var(--border);border-radius:var(--r2);transition:.2s}
+.ci-item:hover{box-shadow:var(--sh);transform:translateX(3px)}
+.ci-icon{width:36px;height:36px;background:var(--navy);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ci-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.ci-val{font-size:13px;font-weight:600;color:var(--navy-d)}
+.soc-row{display:flex;gap:9px}
+.soc{width:36px;height:36px;background:var(--cream);border:1px solid var(--border);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s;cursor:pointer}
+.soc:hover{background:var(--navy);transform:translateY(-2px)}
 
-/* Breakdown table */
-.breakdown-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-.breakdown-table th {
-  background: var(--navy);
-  color: var(--white);
-  padding: 10px 14px;
-  text-align: left;
-  font-weight: 600;
-}
-.breakdown-table td {
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--border);
-}
-.breakdown-table tr:last-child td { border-bottom: none; font-weight: 700; }
-.breakdown-table tr:nth-child(even) td { background: var(--cream); }
-.text-right { text-align: right; }
-.text-green { color: var(--success); }
-.text-red { color: var(--red); }
+/* ─── COMPARATOR ─── */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:0}
+.comp-result-banner{border-radius:var(--r);padding:18px 20px;margin-bottom:18px;text-align:center;animation:fadeUp .3s ease}
+.comp-result-banner.new-wins{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border:2px solid #6EE7B7}
+.comp-result-banner.old-wins{background:linear-gradient(135deg,#FFF7ED,#FED7AA);border:2px solid #FDBA74}
+.comp-result-banner h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:4px}
+.comp-result-banner .save-amt{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700}
+.new-wins h3,.new-wins .save-amt{color:var(--green)}
+.old-wins h3,.old-wins .save-amt{color:#D97706}
+.regime-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.regime-card{border-radius:10px;padding:16px;text-align:center;border:2px solid transparent}
+.regime-card.winner{border-color:var(--gold);background:linear-gradient(135deg,#FFF9E6,#FFFBF0);position:relative}
+.regime-card.winner::before{content:'RECOMMENDED';position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--navy-d);font-size:9px;font-weight:700;padding:2px 9px;border-radius:10px;white-space:nowrap}
+.regime-card.loser{background:#F9FAFB;border-color:var(--border)}
+.regime-card h4{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.winner h4{color:var(--navy-d)}.loser h4{color:var(--muted)}
+.regime-tax{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;margin-bottom:3px}
+.winner .regime-tax{color:var(--navy-d)}.loser .regime-tax{color:var(--muted)}
+.regime-eff{font-size:11px;color:var(--muted)}
+.brkdwn-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:0}
+.brkdwn-table th{background:var(--navy);color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:11px}
+.brkdwn-table th:not(:first-child){text-align:right}
+.brkdwn-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.brkdwn-table td:not(:first-child){text-align:right}
+.brkdwn-table tr:nth-child(even) td{background:var(--cream)}
+.brkdwn-table tr:last-child td{border:none;font-weight:700}
+.comp-section-divider{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-d);padding:10px 0 5px;border-bottom:1px solid var(--border);margin-bottom:10px;grid-column:1/-1}
 
-/* Slab table */
-.slab-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-.slab-table th {
-  background: var(--navy);
-  color: var(--white);
-  padding: 9px 12px;
-  text-align: center;
-  font-weight: 600;
-}
-.slab-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-}
-.slab-table tr:nth-child(even) td { background: var(--cream); }
-.slab-highlight td { background: #FFF9E6 !important; font-weight: 600; }
+/* ─── CARDS (shared) ─── */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.card-hdr{background:linear-gradient(90deg,var(--navy-d),var(--navy));padding:13px 18px;display:flex;align-items:center;gap:9px}
+.card-hdr-icon{width:26px;height:26px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.card-hdr-title{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:#fff}
+.card-body{padding:20px}
 
-/* ── CTA CARD ── */
-.cta-card {
-  background: linear-gradient(135deg, var(--navy-dark), var(--navy));
-  border-radius: 12px;
-  padding: 28px;
-  text-align: center;
-  margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
+/* ─── FORM FIELDS ─── */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:10px;font-weight:700;color:var(--navy);margin-bottom:5px;letter-spacing:.04em;text-transform:uppercase}
+.field input,.field select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r2);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:#fff;outline:none;transition:.2s;-webkit-appearance:none;appearance:none}
+.field input:focus,.field select:focus{border-color:var(--navy)}
+.field span{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ─── FOOTER ─── */
+.footer{background:var(--navy-d);padding:22px 0;border-top:1px solid rgba(255,255,255,.07)}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.f-copy{font-size:11px;color:rgba(255,255,255,.35)}
+.f-disc{font-size:11px;color:rgba(255,255,255,.25);max-width:560px;line-height:1.6}
+
+/* ─── STICKY CONTACT BAR (mobile only) ─── */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;z-index:550;display:none;border-top:3px solid var(--gold)}
+.sticky-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:14px 8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.sticky-wa{background:#25D366;color:#fff}
+.sticky-call{background:var(--gold);color:var(--navy-d);border-left:1px solid rgba(0,0,0,.1)}
+
+/* ─── MODAL ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(3,42,78,.78);z-index:700;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:18px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(3,42,78,.3);animation:mIn .26s ease}
+@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.m-hdr{background:linear-gradient(90deg,var(--navy-d),var(--navy));padding:18px 22px;border-radius:18px 18px 0 0;display:flex;align-items:center;justify-content:space-between}
+.m-hdr h2{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;color:#fff}
+.m-close{background:rgba(255,255,255,.12);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.m-close:hover{background:rgba(255,255,255,.22)}
+.m-body{padding:20px}
+.m-result{display:none;text-align:center;padding:16px 0}
+.m-result .ri{font-size:46px;margin-bottom:10px}
+.m-result h3{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--navy-d);font-weight:700;margin-bottom:7px}
+.m-result p{font-size:13px;color:var(--muted);line-height:1.7;max-width:340px;margin:0 auto 16px}
+.m-badge{display:inline-block;padding:6px 18px;background:var(--blue-l);color:var(--blue);border-radius:20px;font-size:12px;font-weight:600;margin-bottom:16px}
+.m-btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+
+/* ─── MISC ─── */
+.next-row{text-align:center;margin-top:32px}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeUp .32s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width:768px){
+  .sticky-bar{display:flex}
+  body{padding-bottom:56px}
+  .nav-fy{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-card{display:none}
+  .hero-btns{flex-direction:column}
+  .hero-btns .btn{width:100%;justify-content:center}
+  .mand-grid{grid-template-columns:1fr}
+  .cat-grid{grid-template-columns:1fr}
+  .cat-btns{flex-direction:column}
+  .cat-btns .btn{width:100%}
+  .inc-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:repeat(2,1fr)}
+  .field-row{grid-template-columns:1fr}
+  .sec{padding:36px 0}
+  .thresh-wrap{overflow-x:auto}
+  .comp-grid{grid-template-columns:1fr}
+  .regime-cards{grid-template-columns:1fr 1fr}
+  .nav-phone{display:none}
+  .nav-row2{flex-direction:column}
+  .tabs-cta-wrap{border-left:none;border-top:1px solid rgba(255,255,255,.12);padding:6px 10px;justify-content:stretch}
+  .tabs-cta-btn{width:100%;justify-content:center;font-size:13px;padding:9px 12px;border-radius:0}
+  .tabs-scroll{padding:0 6px}
 }
-.cta-card::before {
-  content: '';
-  position: absolute;
-  bottom: -30px; right: -30px;
-  width: 150px; height: 150px;
-  background: var(--gold);
-  opacity: 0.08;
-  border-radius: 50%;
+@media (max-width:420px){
+  .inc-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:1fr}
+  .t-num{display:none}
+  .regime-cards{grid-template-columns:1fr}
+  .m-btns{flex-direction:column;align-items:stretch}
+  .m-btns .btn{width:100%}
+  .tabs-cta-btn{font-size:11px;padding:6px 8px}
 }
-.cta-card h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px;
-  color: var(--white);
-  margin-bottom: 6px;
-}
-.cta-card p { color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 20px; }
-.ca-info {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 20px;
-  display: inline-block;
-  min-width: 260px;
-}
-.ca-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.ca-qual { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
-.ca-phone {
-  font-size: 18px;
-  color: var(--white);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-.cta-btn-row {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/* ── LEAD FORM ── */
-.lead-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media(max-width:500px){ .lead-form { grid-template-columns: 1fr; } }
-.lead-form input {
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  color: var(--text);
-  background: var(--cream);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.lead-form input:focus { border-color: var(--gold); background: var(--white); }
-.lead-form input:last-child { grid-column: 1/-1; }
-
-/* ── TABS CONTENT ── */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
-/* ── ALERT ── */
-.alert {
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.alert-info { background: #EFF6FF; border-left: 4px solid var(--navy); color: var(--navy); }
-.alert-warn { background: #FFFBEB; border-left: 4px solid var(--warn); color: #92400E; }
-
-/* ── DISCLAIMER ── */
-.disclaimer {
-  font-size: 11px;
-  color: var(--muted);
-  text-align: center;
-  padding: 12px;
-  border-top: 1px solid var(--border);
-  line-height: 1.6;
-}
-
-/* ── PILL TAG ── */
-.pill {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.pill-gold { background: #FFF3CC; color: var(--gold-dark); }
-.pill-navy { background: #EBF4FF; color: var(--navy); }
-
-/* ── SUCCESS ── */
-.success-msg {
-  display: none;
-  text-align: center;
-  padding: 20px;
-}
-.success-msg .check {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-/* Animations */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate { animation: fadeUp 0.4s ease forwards; }
-
-.logo-svg { width: 36px; height: 36px; flex-shrink: 0; }
-
-/* ── STICKY BOTTOM BAR ── */
-.sticky-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--navy-dark);
-  border-top: 3px solid var(--gold);
-  display: flex;
-  gap: 0;
-  z-index: 200;
-  box-shadow: 0 -4px 20px rgba(5,61,112,0.3);
-}
-.sticky-bar a {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-.sticky-bar .sticky-wa {
-  background: #25D366;
-  color: #fff;
-  border-right: 1px solid rgba(255,255,255,0.2);
-}
-.sticky-bar .sticky-wa:hover { background: #128C7E; }
-.sticky-bar .sticky-call {
-  background: var(--gold);
-  color: var(--navy);
-}
-.sticky-bar .sticky-call:hover { background: var(--gold-dark); }
-
-/* push page content above sticky bar */
-.main { padding-bottom: 80px !important; }
-@media (max-width: 480px) {
-  .hero h1 { font-size: 20px; }
-  .hero p { font-size: 13px; }
-  .hero-tabs { gap: 6px; }
-  .hero-tab { padding: 5px 11px; font-size: 11px; }
-
-  .main { padding: 16px 12px 50px; }
-
-  .card-header h2 { font-size: 15px; }
-  .card-body { padding: 14px; }
-
-  .regime-cards { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .regime-card { padding: 12px 8px; }
-  .regime-tax { font-size: 22px; }
-  .regime-card.winner::before { font-size: 8px; padding: 2px 7px; }
-
-  .result-banner { padding: 16px 12px; }
-  .result-banner h2 { font-size: 17px; }
-  .result-banner .saving-amount { font-size: 26px; }
-
-  .calc-btn-row { flex-direction: column; gap: 8px; }
-  .calc-btn-row .btn { width: 100%; justify-content: center; }
-
-  .cta-btn-row { flex-direction: column; gap: 8px; align-items: stretch; }
-  .cta-btn-row .btn { width: 100%; justify-content: center; }
-
-  .cta-card { padding: 20px 14px; }
-  .cta-card h2 { font-size: 19px; }
-  .ca-info { min-width: unset; width: 100%; }
-
-  .breakdown-table th, .breakdown-table td { padding: 8px 10px; font-size: 12px; }
-  .slab-table th, .slab-table td { padding: 7px 8px; font-size: 11px; }
-
-  .field-grid { grid-template-columns: 1fr; }
-  .field input, .field select { font-size: 16px; } /* prevents iOS zoom */
-
-  .brand-name { font-size: 17px; }
-  .brand-sub { font-size: 8px; letter-spacing: 0.12em; }
-  .fy-badge { font-size: 10px; padding: 3px 8px; }
-}
-
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <svg class="logo-svg" viewBox="0 0 825 825" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 825 412.5 0 825 825 409.489 264.91 0 825Z" fill="#FFC000" fill-rule="evenodd"/>
-      <path d="M96 825 459 165 822 825 456.35 376.93 96 825Z" fill="#FFC000" fill-rule="evenodd"/>
-      <path d="M198 825 511.5 297 825 825 509.212 466.54 198 825Z" fill="#FFC000" fill-rule="evenodd"/>
-    </svg>
-    <div class="brand-wrap">
-      <div class="brand-name">DAIS ADVISORS</div>
-      <div class="brand-sub">Tax &amp; Advisory Services</div>
-    </div>
-    <span class="fy-badge">FY 2025-26</span>
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-row1">
+    <a href="#" class="brand">
+      <svg viewBox="0 0 825 825" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 825 412.5 0 825 825 409.489 264.91 0 825Z" fill="#FFC000" fill-rule="evenodd"/>
+        <path d="M96 825 459 165 822 825 456.35 376.93 96 825Z" fill="#FFC000" fill-rule="evenodd"/>
+        <path d="M198 825 511.5 297 825 825 509.212 466.54 198 825Z" fill="#FFC000" fill-rule="evenodd"/>
+      </svg>
+      <div><div class="brand-name">DAIS ADVISORS</div><div class="brand-sub">Tax &amp; Advisory</div></div>
+    </a>
+    <span class="nav-fy">FY 2025-26</span>
+    
+<div class="header-actions">
+<a href="tel:+918529081017" class="nav-phone">&#128222; +91 85290 81017</a>
+<a href="https://wa.me/918529081017?text=Hi%20DAIS%20Advisors,%20I%20need%20help%20with%20ITR%20filing."
+   class="nav-whatsapp" target="_blank">&#128172; WhatsApp Us</a>
+</div>
+
   </div>
-</header>
+  <div class="nav-row2" id="tabsInHero">
+    <div class="tabs-scroll">
+      <button class="tab-btn active" id="tb0" onclick="goTab(0)"><span class="t-num">1</span> Who Needs ITR</button>
+      <button class="tab-btn" id="tb1" onclick="goTab(1)"><span class="t-num">2</span> Services</button>
+      <button class="tab-btn" id="tb2" onclick="goTab(2)"><span class="t-num">3</span> What's Included</button>
+      <button class="tab-btn" id="tb3" onclick="goTab(3)"><span class="t-num">4</span> Why Us</button>
+      <button class="tab-btn" id="tb4" onclick="goTab(4)"><span class="t-num">5</span> Contact</button>
+    </div>
+    <div class="tabs-cta-wrap">
+      <button onclick="goTab(5)" class="tabs-cta-btn">&#129518; Use Our Free Tax Comparator</button>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-bar" id="progBar" style="width:20%"></div></div>
+</nav>
 
 <!-- HERO -->
 <div class="hero">
-  <h1>Income Tax Regime Comparator</h1>
-  <p>AY 2026-27 · Instant Old vs New Regime Analysis</p>
-  <div class="hero-tabs">
-    <button class="hero-tab active" onclick="showSection('calculator')">🧮 Calculator</button>
-    <button class="hero-tab" onclick="showSection('slabs')">📊 Tax Slabs</button>
-    <button class="hero-tab" onclick="showSection('contact')">📞 CA Assistance</button>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-badge">&#128197; FY 2025-26 &middot; AY 2026-27</div>
+      <h1 class="hero-title">File Your ITR<br><span>The Right Way.</span></h1>
+      <p class="hero-desc">Expert CA/CS/Advocates team handles your Income Tax Return &mdash; accurately and professionally. Serving individuals, professionals &amp; businesses across India.</p>
+      <div class="hero-btns">
+        <button onclick="goTab(1)" class="btn btn-gold btn-lg">Start Filing &rarr;</button>
+        <button onclick="openModal()" class="btn btn-ghost btn-lg">Get Fee Estimate</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="s-num">5,000+</div><div class="s-lbl">Returns Assisted</div></div>
+        <div><div class="s-num">CA/CS</div><div class="s-lbl">Advocates</div></div>
+        <div><div class="s-num">31 Jul</div><div class="s-lbl">Due Date 2026</div></div>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-title">&#128203; Standard Coverage</div>
+      <ul class="hc-list">
+        <li class="hc-item"><span class="hc-dot">&#10003;</span>AIS &amp; Form 26AS Verification</li>
+        <li class="hc-item"><span class="hc-dot">&#10003;</span>Old vs New Tax Regime Analysis</li>
+        <li class="hc-item"><span class="hc-dot">&#10003;</span>Capital Gains Computation</li>
+        <li class="hc-item"><span class="hc-dot">&#10003;</span>Tax Computation &amp; Return Prep</li>
+        <li class="hc-item"><span class="hc-dot">&#10003;</span>e-Filing &amp; Acknowledgement</li>
+        <li class="hc-item"><span class="hc-dot">&#10003;</span>Basic Post-Filing Support</li>
+      </ul>
+      <div class="hero-due">
+        <span style="font-size:18px">&#128197;</span>
+        <div><div class="due-t">Due Date: 31 July 2026</div><div class="due-s">Subject to extension by IT Department</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="main">
-
-<!-- ════════════════════════════════════════════
-     SECTION 1: CALCULATOR
-════════════════════════════════════════════ -->
-<div id="sec-calculator" class="section active">
-
-  <!-- Income Details -->
-  <div class="card animate">
-    <div class="card-header">
-      <div class="card-icon">💼</div>
-      <h2>Income Details</h2>
+<!-- TAB 0: WHO NEEDS ITR -->
+<div class="tab-panel active" id="tp0">
+<div class="sec t1-bg">
+<div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow">Know Your Obligation</div>
+    <h2>Who Needs to File ITR?</h2>
+    <div class="gold-rule"></div>
+    <p>ITR filing is mandatory for some and strongly recommended for others. Know where you stand before the due date.</p>
+  </div>
+  <div class="mand-grid">
+    <div class="mc mand">
+      <div class="mc-head"><span style="font-size:20px">&#9888;</span><h3>Mandatory Filing</h3></div>
+      <ul class="mc-list">
+        <li><span class="mc-dot">!</span>Income exceeds basic exemption limit</li>
+        <li><span class="mc-dot">!</span>Company or Firm (any profit/loss)</li>
+        <li><span class="mc-dot">!</span>Bank deposits of &#8377;1 Crore or more</li>
+        <li><span class="mc-dot">!</span>Foreign travel spend above &#8377;2 Lakh</li>
+        <li><span class="mc-dot">!</span>Electricity bill exceeds &#8377;1 Lakh/year</li>
+        <li><span class="mc-dot">!</span>TDS / TCS of &#8377;25,000+ deducted</li>
+        <li><span class="mc-dot">!</span>NRI with income arising in India</li>
+        <li><span class="mc-dot">!</span>Foreign assets or foreign bank accounts</li>
+      </ul>
     </div>
-    <div class="card-body">
-      <div class="field-grid">
-        <div class="section-divider">Basic Information</div>
+    <div class="mc rec">
+      <div class="mc-head"><span style="font-size:20px">&#10003;</span><h3>Strongly Recommended</h3></div>
+      <ul class="mc-list">
+        <li><span class="mc-dot">&#10003;</span>Claim TDS refund from bank or employer</li>
+        <li><span class="mc-dot">&#10003;</span>Carry forward capital loss to next year</li>
+        <li><span class="mc-dot">&#10003;</span>Income below limit but TDS was deducted</li>
+        <li><span class="mc-dot">&#10003;</span>Applying for home loan or vehicle loan</li>
+        <li><span class="mc-dot">&#10003;</span>Applying for visa (USA/UK/Canada/Schengen)</li>
+        <li><span class="mc-dot">&#10003;</span>Freelancers receiving professional fees</li>
+        <li><span class="mc-dot">&#10003;</span>Students with FD interest or part-time income</li>
+        <li><span class="mc-dot">&#10003;</span>Maintaining a clean financial record</li>
+      </ul>
+    </div>
+  </div>
 
+  <div class="thresh-wrap">
+    <div class="thresh-hdr">&#128202; Basic Exemption Limits &mdash; Who Must File?</div>
+    <div style="overflow-x:auto">
+    <table class="tt">
+      <thead><tr><th>Category</th><th>Age</th><th>Exemption Limit</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Resident Individual</td><td>Below 60 yrs</td><td>&#8377;2,50,000</td><td><span class="bm">Mandatory</span></td></tr>
+        <tr><td>Senior Citizen</td><td>60&ndash;79 yrs</td><td>&#8377;3,00,000</td><td><span class="bm">Mandatory</span></td></tr>
+        <tr><td>Super Senior Citizen</td><td>80+ yrs</td><td>&#8377;5,00,000</td><td><span class="bm">Mandatory</span></td></tr>
+        <tr><td>New Regime Default</td><td>Any</td><td>&#8377;3,00,000</td><td><span class="bm">Mandatory</span></td></tr>
+        <tr><td>TDS deducted (below limit)</td><td>Any</td><td>&mdash;</td><td><span class="br">Recommended</span></td></tr>
+        <tr><td>Capital Loss to carry forward</td><td>Any</td><td>&mdash;</td><td><span class="bm">Mandatory</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-top:36px;margin-bottom:18px">
+    <div class="eyebrow">Benefits</div>
+    <h2>Why Filing is Always a Good Idea</h2>
+    <div class="gold-rule"></div>
+  </div>
+  <div class="ben-grid">
+    <div class="ben-item"><span class="ben-icon">&#128176;</span><div class="ben-text"><h4>Claim Tax Refunds</h4><p>Get back excess TDS deducted by employer or bank.</p></div></div>
+    <div class="ben-item"><span class="ben-icon">&#128202;</span><div class="ben-text"><h4>Carry Forward Losses</h4><p>Capital losses offset future gains &mdash; only if you file.</p></div></div>
+    <div class="ben-item"><span class="ben-icon">&#127968;</span><div class="ben-text"><h4>Loan Approval</h4><p>Banks require ITR as income proof for loans.</p></div></div>
+    <div class="ben-item"><span class="ben-icon">&#9992;</span><div class="ben-text"><h4>Visa Processing</h4><p>Embassies ask for 3 years ITR for long-stay visas.</p></div></div>
+    <div class="ben-item"><span class="ben-icon">&#128203;</span><div class="ben-text"><h4>Income Proof</h4><p>ITR acknowledgement is a valid financial document.</p></div></div>
+    <div class="ben-item"><span class="ben-icon">&#9878;</span><div class="ben-text"><h4>Legal Compliance</h4><p>Avoid IT notices, penalties, and interest charges.</p></div></div>
+  </div>
+  <div class="next-row"><button onclick="goTab(1)" class="btn btn-navy btn-lg">View Our Services &rarr;</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 1: SERVICES -->
+<div class="tab-panel" id="tp1">
+<div class="sec t2-bg">
+<div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow">Choose Your Category</div>
+    <h2>Which type of taxpayer are you?</h2>
+    <div class="gold-rule"></div>
+    <p>Select the category that best describes your income sources.</p>
+  </div>
+  <div class="cat-grid">
+
+    <div class="cat-card tb">
+      <div class="cat-top">
+        <div class="cat-stripe"></div>
+        <div class="cat-icon">&#128188;</div>
+        <div class="cat-title">Salaried Employee</div>
+        <div class="for-lbl">Suitable For</div>
+        <ul class="for-list"><li>Salary &amp; Pension Income</li><li>One House Property</li><li>Interest Income</li><li>Form 16 Based Returns</li></ul>
+      </div>
+      <div class="cat-body">
+        <div class="inc-lbl">Includes</div>
+        <ul class="inc-list">
+          <li><span class="c-tick">&#10003;</span>AIS Verification</li>
+          <li><span class="c-tick">&#10003;</span>Form 26AS Review</li>
+          <li><span class="c-tick">&#10003;</span>Tax Regime Comparison</li>
+          <li><span class="c-tick">&#10003;</span>Return Filing Support</li>
+        </ul>
+        <div class="cat-btns">
+          <button onclick="openModal('Salaried Employee')" class="btn btn-f">Start Filing</button>
+          <button onclick="openModal('Salaried Employee')" class="btn btn-o">Fee Estimate</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card tg">
+      <div class="cat-top">
+        <div class="cat-stripe"></div>
+        <div class="cat-icon">&#128200;</div>
+        <div class="cat-title">Salary + Capital Gains</div>
+        <div class="for-lbl">Suitable For</div>
+        <ul class="for-list"><li>Share Trading &amp; Mutual Funds</li><li>SIP Redemptions</li><li>Property Sale</li><li>Dividend Income</li></ul>
+      </div>
+      <div class="cat-body">
+        <div class="inc-lbl">Includes</div>
+        <ul class="inc-list">
+          <li><span class="c-tick">&#10003;</span>Capital Gain Review</li>
+          <li><span class="c-tick">&#10003;</span>AIS Reconciliation</li>
+          <li><span class="c-tick">&#10003;</span>Tax Regime Analysis</li>
+          <li><span class="c-tick">&#10003;</span>Return Filing Support</li>
+        </ul>
+        <div class="cat-btns">
+          <button onclick="openModal('Salary + Capital Gains')" class="btn btn-f">Start Filing</button>
+          <button onclick="openModal('Salary + Capital Gains')" class="btn btn-o">Fee Estimate</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card ta">
+      <div class="cat-top">
+        <div class="cat-stripe"></div>
+        <div class="cat-icon">&#127962;</div>
+        <div class="cat-title">Business / Professional</div>
+        <div class="for-lbl">Suitable For</div>
+        <ul class="for-list"><li>Freelancers &amp; Consultants</li><li>Proprietorships</li><li>44AD / 44ADA Returns</li><li>Business Income</li></ul>
+      </div>
+      <div class="cat-body">
+        <div class="inc-lbl">Includes</div>
+        <ul class="inc-list">
+          <li><span class="c-tick">&#10003;</span>Business Income Review</li>
+          <li><span class="c-tick">&#10003;</span>GST Reconciliation</li>
+          <li><span class="c-tick">&#10003;</span>Tax Computation</li>
+          <li><span class="c-tick">&#10003;</span>Return Filing Support</li>
+        </ul>
+        <div class="cat-btns">
+          <button onclick="openModal('Business / Professional')" class="btn btn-f">Start Filing</button>
+          <button onclick="openModal('Business / Professional')" class="btn btn-o">Fee Estimate</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card tr">
+      <div class="cat-top">
+        <div class="cat-stripe"></div>
+        <div class="cat-icon">&#127758;</div>
+        <div class="cat-title">Specialized Taxation</div>
+        <div class="for-lbl">Suitable For</div>
+        <ul class="for-list"><li>NRI Returns</li><li>Foreign Assets / Income</li><li>ESOP &amp; Crypto Reporting</li><li>Complex Tax Matters</li></ul>
+      </div>
+      <div class="cat-body">
+        <div class="inc-lbl">Includes</div>
+        <ul class="inc-list">
+          <li><span class="c-tick">&#10003;</span>Detailed Review</li>
+          <li><span class="c-tick">&#10003;</span>Advisory Support</li>
+          <li><span class="c-tick">&#10003;</span>Compliance Assistance</li>
+        </ul>
+        <div class="cat-btns">
+          <button onclick="openModal('Specialized Taxation')" class="btn btn-f">Start Filing</button>
+          <button onclick="openModal('Specialized Taxation')" class="btn btn-o">Fee Estimate</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="cta-strip">
+    <div class="eyebrow" style="color:rgba(255,255,255,.55)">Free Tool</div>
+    <h2>Not sure which regime suits you?</h2>
+    <p>Use our free Tax Comparator to compare Old vs New Regime for FY 2025-26 and see where you save more.</p>
+    <button onclick="goTab(5)" class="btn btn-gold btn-lg">Use Free Tax Comparator &rarr;</button>
+  </div>
+  <div class="next-row"><button onclick="goTab(2)" class="btn btn-navy btn-lg">What's Included &rarr;</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 2: INCLUDED -->
+<div class="tab-panel" id="tp2">
+<div class="sec t3-bg">
+<div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow">Standard Scope</div>
+    <h2>What's Included in Every Filing</h2>
+    <div class="gold-rule"></div>
+    <p>These are covered as standard in every engagement, regardless of the category chosen.</p>
+  </div>
+  <div class="inc-grid">
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Document Review</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>AIS Verification</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Form 26AS Review</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Tax Computation</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Tax Regime Analysis</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Return Preparation</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Return Filing</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Filing Acknowledgement</div>
+    <div class="inc-item"><span class="i-tick">&#10003;</span>Basic Post-Filing Support</div>
+  </div>
+  <div class="addl-sec">
+    <h3>&#10133; Additional Services Available</h3>
+    <div class="tags">
+      <span class="tag">Capital Gain Computation</span>
+      <span class="tag">Foreign Assets Reporting</span>
+      <span class="tag">Foreign Income Reporting</span>
+      <span class="tag">ESOP Reporting</span>
+      <span class="tag">Crypto / VDA Reporting</span>
+      <span class="tag">Multiple Demat Accounts</span>
+      <span class="tag">Tax Notices</span>
+      <span class="tag">Revised Return</span>
+      <span class="tag">Defective Return</span>
+      <span class="tag">AIS Reconciliation</span>
+    </div>
+    <div class="addl-note">&#9888; Additional professional fees may apply depending on complexity and reporting requirements.</div>
+  </div>
+  <div class="next-row"><button onclick="goTab(3)" class="btn btn-gold btn-lg">Why Choose Us &rarr;</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 3: WHY US -->
+<div class="tab-panel" id="tp3">
+<div class="sec">
+<div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow">Why DAIS Advisors</div>
+    <h2>Built for Accuracy. Designed for You.</h2>
+    <div class="gold-rule"></div>
+  </div>
+  <div class="why-grid">
+    <div class="why-item"><div class="why-icon">&#128107;</div><div class="why-text"><h3>Chartered Accountant Review</h3><p>Every return reviewed by a qualified CA/CS/Advocate &mdash; no shortcuts.</p></div></div>
+    <div class="why-item"><div class="why-icon">&#128202;</div><div class="why-text"><h3>AIS &amp; 26AS Verification</h3><p>We reconcile your AIS and 26AS to catch mismatches early.</p></div></div>
+    <div class="why-item"><div class="why-icon">&#9878;</div><div class="why-text"><h3>Tax Regime Comparison</h3><p>Old vs New regime analysis so you pay the minimum tax legally.</p></div></div>
+    <div class="why-item"><div class="why-icon">&#128140;</div><div class="why-text"><h3>Notices &amp; Refund Support</h3><p>We assist with IT notices and follow up on delayed refunds.</p></div></div>
+    <div class="why-item"><div class="why-icon">&#129309;</div><div class="why-text"><h3>Personalised Advisory</h3><p>One-on-one CA/CS/Advocate consultation &mdash; not a software form submission.</p></div></div>
+    <div class="why-item"><div class="why-icon">&#9200;</div><div class="why-text"><h3>Timely Filing Guaranteed</h3><p>We track your deadlines so you never face penalties or interest.</p></div></div>
+  </div>
+  <div class="next-row"><button onclick="goTab(4)" class="btn btn-navy btn-lg">Contact Us &rarr;</button></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 4: CONTACT -->
+<div class="tab-panel" id="tp4">
+<div class="sec">
+<div class="wrap">
+  <div class="contact-grid">
+    <div>
+      <div class="eyebrow">Get in Touch</div>
+      <div class="ci-title">Let's Handle Your ITR Together</div>
+      <div style="width:40px;height:3px;background:var(--gold);border-radius:2px;margin:8px 0 12px"></div>
+      <div class="ci-desc">Reach out via any channel &mdash; our expert team responds within one business day.</div>
+      <div class="ci-list">
+        <a href="https://tax.daisadvisors.com" class="ci-item" target="_blank">
+          <div class="ci-icon">&#127760;</div>
+          <div><div class="ci-lbl">Website</div><div class="ci-val">tax.daisadvisors.com</div></div>
+        </a>
+        <a href="mailto:office@daisadvisors.com" class="ci-item">
+          <div class="ci-icon">&#9993;</div>
+          <div><div class="ci-lbl">Email</div><div class="ci-val">office@daisadvisors.com</div></div>
+        </a>
+        <a href="tel:+918529081017" class="ci-item">
+          <div class="ci-icon">&#128222;</div>
+          <div><div class="ci-lbl">Phone</div><div class="ci-val">+91 85290 81017</div></div>
+        </a>
+        <a href="https://api.whatsapp.com/send?phone=918529081017&text=Hi%2C%20I%20need%20help%20with%20ITR%20filing." class="ci-item">
+          <div class="ci-icon">&#128172;</div>
+          <div><div class="ci-lbl">WhatsApp</div><div class="ci-val">Chat with our expert team</div></div>
+        </a>
+      </div>
+      <div class="soc-row">
+        <div class="soc">&#128188;</div>
+        <div class="soc">&#128038;</div>
+        <div class="soc">&#128247;</div>
+        <div class="soc">&#9654;</div>
+      </div>
+    </div>
+      </div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- TAB 5: TAX COMPARATOR -->
+<div class="tab-panel" id="tp5">
+<div class="sec" style="background:var(--cream)">
+<div class="wrap">
+  <div class="sec-head">
+    <div class="eyebrow">Free Tool</div>
+    <h2>Old vs New Tax Regime Comparator</h2>
+    <div class="gold-rule"></div>
+    <p>FY 2025-26 / AY 2026-27 &mdash; Enter your income details and instantly see which regime saves you more tax.</p>
+  </div>
+
+  <!-- INPUT CARD -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:20px;overflow:hidden">
+    <div style="background:linear-gradient(90deg,var(--navy-d),var(--navy));padding:13px 18px;display:flex;align-items:center;gap:9px">
+      <div style="width:26px;height:26px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px">&#128188;</div>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:#fff">Income Details</span>
+    </div>
+    <div style="padding:18px">
+      <div class="comp-grid">
+        <div class="comp-section-divider">Basic Information</div>
         <div class="field">
-          <label>Gross Annual Salary (₹)</label>
-          <input type="number" id="salary" placeholder="e.g. 1200000" oninput="onInputChange()">
-          <span class="field-hint">CTC / Total salary before deductions</span>
+          <label>Gross Annual Salary (&#8377;)</label>
+          <input type="number" id="c-salary" placeholder="e.g. 1200000">
         </div>
         <div class="field">
           <label>Age / Category</label>
-          <select id="age" onchange="onInputChange()">
+          <select id="c-age">
             <option value="general">Below 60 years</option>
-            <option value="senior">Senior Citizen (60–80 yrs)</option>
-            <option value="supersenior">Super Senior (80+ yrs)</option>
+            <option value="senior">Senior Citizen (60&ndash;80)</option>
+            <option value="supersenior">Super Senior (80+)</option>
           </select>
         </div>
-
-        <div class="section-divider">Exemptions &amp; Deductions (Old Regime Only)</div>
-
+        <div class="comp-section-divider">Exemptions &amp; Deductions (Old Regime Only)</div>
         <div class="field">
-          <label>HRA Exemption (₹)</label>
-          <input type="number" id="hra_exempt" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">Enter exempt amount as per your Form 16</span>
+          <label>HRA Exemption (&#8377;)</label>
+          <input type="number" id="c-hra" placeholder="0">
+          <span style="font-size:11px;color:var(--muted)">Enter exempt amount from Form 16</span>
         </div>
         <div class="field">
-          <label>80C Investments (₹)</label>
-          <input type="number" id="d80c" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">Max ₹1,50,000</span>
+          <label>80C Investments (&#8377;)</label>
+          <input type="number" id="c-80c" placeholder="0">
+          <span style="font-size:11px;color:var(--muted)">Max &#8377;1,50,000</span>
         </div>
         <div class="field">
-          <label>80D Health Insurance (₹)</label>
-          <input type="number" id="d80d" placeholder="0" oninput="onInputChange()">
+          <label>80D Health Insurance (&#8377;)</label>
+          <input type="number" id="c-80d" placeholder="0">
         </div>
         <div class="field">
-          <label>NPS 80CCD(1B) (₹)</label>
-          <input type="number" id="d80nps" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">Max ₹50,000</span>
+          <label>NPS 80CCD(1B) (&#8377;)</label>
+          <input type="number" id="c-nps" placeholder="0">
+          <span style="font-size:11px;color:var(--muted)">Max &#8377;50,000</span>
+        </div>
+        <div class="comp-section-divider">Other Income</div>
+        <div class="field">
+          <label>Interest Income (&#8377;)</label>
+          <input type="number" id="c-int" placeholder="0">
         </div>
         <div class="field">
-          <label>Other Deductions (₹)</label>
-          <input type="number" id="dother" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">80E, 80G, 80TTA, Home Loan etc.</span>
-        </div>
-
-        <div class="field">
-          <label>80C Investments (₹)</label>
-          <input type="number" id="d80c" placeholder="0" max="150000" oninput="onInputChange()">
-          <span class="field-hint">Max ₹1,50,000 (PPF/ELSS/LIC etc.)</span>
-        </div>
-        <div class="field">
-          <label>80D Health Insurance (₹)</label>
-          <input type="number" id="d80d" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">Self: ₹25K / Parents: ₹25–50K</span>
-        </div>
-        <div class="field">
-          <label>80CCD(1B) NPS (₹)</label>
-          <input type="number" id="d80nps" placeholder="0" max="50000" oninput="onInputChange()">
-          <span class="field-hint">Additional NPS, max ₹50,000</span>
-        </div>
-        <div class="field">
-          <label>Other Deductions (₹)</label>
-          <input type="number" id="dother" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">80E, 80G, 80TTA etc.</span>
-        </div>
-
-        <div class="section-divider">Other Income</div>
-
-        <div class="field">
-          <label>Interest Income (₹)</label>
-          <input type="number" id="interest" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">FD / Savings account interest</span>
-        </div>
-        <div class="field">
-          <label>Other Income (₹)</label>
-          <input type="number" id="otherincome" placeholder="0" oninput="onInputChange()">
-          <span class="field-hint">Rental / Freelance / Business etc.</span>
+          <label>Other Income (&#8377;)</label>
+          <input type="number" id="c-other" placeholder="0">
         </div>
       </div>
-
-      <div class="calc-btn-row">
-        <button class="btn btn-primary" onclick="calculate()">⚡ Calculate &amp; Compare</button>
-        <button class="btn btn-outline btn-sm" onclick="resetForm()">↺ Reset</button>
+      <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+        <button class="btn btn-navy btn-lg" onclick="runCalc()">&#9889; Calculate &amp; Compare</button>
+        <button class="btn btn-outline btn-sm" onclick="resetCalc()">&#8635; Reset</button>
       </div>
     </div>
   </div>
 
-  <!-- RESULT (hidden until calculated) -->
-  <div id="result-section" style="display:none;">
+  <!-- RESULT AREA -->
+  <div id="comp-result" style="display:none">
 
     <!-- Banner -->
-    <div id="result-banner" class="result-banner animate"></div>
+    <div id="comp-banner" class="comp-result-banner"></div>
 
-    <!-- Regime cards -->
-    <div class="regime-cards animate">
-      <div id="card-old" class="regime-card">
-        <h3>Old Regime</h3>
-        <div id="tax-old" class="regime-tax">—</div>
-        <div id="eff-old" class="regime-eff">Effective rate: —</div>
+    <!-- Regime Cards -->
+    <div class="regime-cards">
+      <div id="rc-old" class="regime-card">
+        <h4>Old Regime</h4>
+        <div id="rt-old" class="regime-tax">&#8377;0</div>
+        <div id="re-old" class="regime-eff">Effective: 0%</div>
       </div>
-      <div id="card-new" class="regime-card">
-        <h3>New Regime</h3>
-        <div id="tax-new" class="regime-tax">—</div>
-        <div id="eff-new" class="regime-eff">Effective rate: —</div>
+      <div id="rc-new" class="regime-card">
+        <h4>New Regime</h4>
+        <div id="rt-new" class="regime-tax">&#8377;0</div>
+        <div id="re-new" class="regime-eff">Effective: 0%</div>
       </div>
     </div>
 
-    <!-- Breakdown -->
-    <div class="card animate">
-      <div class="card-header">
-        <div class="card-icon">📋</div>
-        <h2>Detailed Breakdown</h2>
+    <!-- Breakdown Table -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:16px">
+      <div style="background:linear-gradient(90deg,var(--navy-d),var(--navy));padding:13px 18px;display:flex;align-items:center;gap:9px">
+        <div style="width:26px;height:26px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px">&#128203;</div>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:#fff">Detailed Breakdown</span>
       </div>
-      <div class="card-body" style="padding:0; overflow-x:auto;">
-        <table class="breakdown-table" id="breakdown-table">
-          <thead>
-            <tr>
-              <th>Particulars</th>
-              <th class="text-right">Old Regime (₹)</th>
-              <th class="text-right">New Regime (₹)</th>
-            </tr>
-          </thead>
-          <tbody id="breakdown-body"></tbody>
+      <div style="overflow-x:auto">
+        <table class="brkdwn-table" id="comp-table">
+          <thead><tr><th>Particulars</th><th>Old Regime (&#8377;)</th><th>New Regime (&#8377;)</th></tr></thead>
+          <tbody id="comp-tbody"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- Actions -->
-    <div class="calc-btn-row animate" style="margin-bottom:20px;">
-      <button class="btn btn-gold" onclick="downloadPDF()">⬇ Download PDF Summary</button>
-      <button class="btn btn-outline btn-sm" onclick="showSection('contact')">📞 Talk to CA</button>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta-card animate">
-      <h2>Need Help Filing Your ITR?</h2>
-      <p>Our CA will review your computation and file your return accurately</p>
-      <div class="ca-info">
-        <div class="ca-name" id="cta-ca-name">CA / CS Ankit</div>
-        <div class="ca-qual">DAIS Advisors Private Limited · Tax &amp; Advisory</div>
-        <div class="ca-phone" id="cta-ca-phone">📞 +91-XXXXXXXXXX</div>
-      </div>
-      <div class="cta-btn-row">
-        <a id="wa-btn-result" href="javascript:void(0)" onclick="openWA()" class="btn btn-wa">💬 WhatsApp Now</a>
-        <a id="call-btn-result" href="javascript:void(0)" onclick="openCall()" class="btn btn-gold">📞 Call Now</a>
+    <!-- CTA after result -->
+    <div style="background:linear-gradient(135deg,var(--navy-d),var(--navy));border-radius:var(--r);padding:22px;text-align:center">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px">Need Help Filing Your ITR?</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:16px">Our expert will review your computation and file your return accurately</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <a id="comp-wa-btn" href="#" onclick="compWA();return false;" class="btn" style="background:#25D366;color:#fff">&#128172; WhatsApp Now</a>
+        <a href="tel:+918529081017" class="btn btn-gold">&#128222; Call Now</a>
+        <button onclick="goTab(4)" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.4)">&#128203; Contact Us</button>
       </div>
     </div>
 
-  </div><!-- /result-section -->
-</div><!-- /sec-calculator -->
-
-
-<!-- ════════════════════════════════════════════
-     SECTION 2: TAX SLABS
-════════════════════════════════════════════ -->
-<div id="sec-slabs" class="section">
-
-  <div class="alert alert-info">
-    ℹ️ Applicable for <strong>AY 2026-27 (FY 2025-26)</strong>. Surcharge and cess apply additionally.
-  </div>
-
-  <!-- New Regime -->
-  <div class="card">
-    <div class="card-header"><div class="card-icon">🆕</div><h2>New Tax Regime — Default from FY 2023-24</h2></div>
-    <div class="card-body" style="padding:0; overflow-x:auto;">
-      <table class="slab-table">
-        <thead><tr><th>Income Slab</th><th>Tax Rate</th><th>Notes</th></tr></thead>
-        <tbody>
-          <tr><td>Up to ₹4,00,000</td><td>NIL</td><td>—</td></tr>
-          <tr><td>₹4,00,001 – ₹8,00,000</td><td>5%</td><td>—</td></tr>
-          <tr><td>₹8,00,001 – ₹12,00,000</td><td>10%</td><td>—</td></tr>
-          <tr><td>₹12,00,001 – ₹16,00,000</td><td>15%</td><td>—</td></tr>
-          <tr><td>₹16,00,001 – ₹20,00,000</td><td>20%</td><td>—</td></tr>
-          <tr><td>₹20,00,001 – ₹24,00,000</td><td>25%</td><td>—</td></tr>
-          <tr class="slab-highlight"><td>Above ₹24,00,000</td><td>30%</td><td>—</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card-body">
-      <div class="alert alert-warn">⚠️ <strong>Section 87A Rebate:</strong> Full tax rebate up to ₹60,000 if total income ≤ ₹12,00,000 (New Regime). Effectively NIL tax.</div>
-      <p style="font-size:13px; color:var(--muted);">Standard Deduction: ₹75,000 for salaried. No deductions for 80C/80D/HRA etc. under New Regime.</p>
-    </div>
-  </div>
-
-  <!-- Old Regime -->
-  <div class="card">
-    <div class="card-header"><div class="card-icon">📜</div><h2>Old Tax Regime — Deductions Available</h2></div>
-    <div class="card-body" style="padding:0; overflow-x:auto;">
-      <table class="slab-table">
-        <thead><tr><th>Income Slab</th><th>&lt;60 yrs</th><th>Senior (60–80)</th><th>Super Sr (80+)</th></tr></thead>
-        <tbody>
-          <tr><td>Up to ₹2,50,000</td><td>NIL</td><td>NIL</td><td>NIL</td></tr>
-          <tr><td>₹2,50,001 – ₹3,00,000</td><td>5%</td><td>NIL</td><td>NIL</td></tr>
-          <tr><td>₹3,00,001 – ₹5,00,000</td><td>5%</td><td>5%</td><td>NIL</td></tr>
-          <tr><td>₹5,00,001 – ₹10,00,000</td><td>20%</td><td>20%</td><td>20%</td></tr>
-          <tr class="slab-highlight"><td>Above ₹10,00,000</td><td>30%</td><td>30%</td><td>30%</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card-body">
-      <div class="alert alert-warn">⚠️ <strong>Section 87A Rebate:</strong> Full tax rebate up to ₹12,500 if total income ≤ ₹5,00,000 (Old Regime).</div>
-      <p style="font-size:13px; color:var(--muted);">Standard Deduction: ₹50,000. Allows 80C (max ₹1.5L), 80D, HRA, NPS (₹50K extra), and many more deductions.</p>
-    </div>
-  </div>
-
-  <!-- Surcharge -->
-  <div class="card">
-    <div class="card-header"><div class="card-icon">📈</div><h2>Surcharge &amp; Cess</h2></div>
-    <div class="card-body" style="padding:0; overflow-x:auto;">
-      <table class="slab-table">
-        <thead><tr><th>Total Income</th><th>Surcharge Rate</th></tr></thead>
-        <tbody>
-          <tr><td>Up to ₹50 Lakh</td><td>NIL</td></tr>
-          <tr><td>₹50L – ₹1 Crore</td><td>10%</td></tr>
-          <tr><td>₹1Cr – ₹2 Crore</td><td>15%</td></tr>
-          <tr><td>₹2Cr – ₹5 Crore</td><td>25% (Old) / 25% (New)</td></tr>
-          <tr class="slab-highlight"><td>Above ₹5 Crore</td><td>37% (Old) / 25% (New)</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card-body">
-      <p style="font-size:13px; color:var(--muted);">Health &amp; Education Cess: <strong>4%</strong> on (Tax + Surcharge) for all taxpayers.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"><div class="card-icon">🎯</div><h2>Key Deduction Limits (Old Regime)</h2></div>
-    <div class="card-body" style="padding:0; overflow-x:auto;">
-      <table class="slab-table">
-        <thead><tr><th>Section</th><th>Deduction</th><th>Limit</th></tr></thead>
-        <tbody>
-          <tr><td>80C</td><td>PPF, ELSS, LIC, EPF, Home Loan Principal</td><td>₹1,50,000</td></tr>
-          <tr><td>80CCD(1B)</td><td>NPS Additional Contribution</td><td>₹50,000</td></tr>
-          <tr><td>80D</td><td>Health Insurance – Self/Family</td><td>₹25,000</td></tr>
-          <tr><td>80D</td><td>Health Insurance – Senior Parents</td><td>₹50,000</td></tr>
-          <tr><td>80E</td><td>Education Loan Interest</td><td>No limit</td></tr>
-          <tr><td>80TTA</td><td>Savings Interest (non-senior)</td><td>₹10,000</td></tr>
-          <tr><td>80TTB</td><td>Interest Income (Senior Citizens)</td><td>₹50,000</td></tr>
-          <tr><td>24(b)</td><td>Home Loan Interest (Self-occupied)</td><td>₹2,00,000</td></tr>
-          <tr><td>HRA</td><td>House Rent Allowance</td><td>Calculated</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-</div><!-- /sec-slabs -->
-
-
-<!-- ════════════════════════════════════════════
-     SECTION 3: CONTACT / LEAD
-════════════════════════════════════════════ -->
-<div id="sec-contact" class="section">
-
-  <div class="cta-card">
-    <h2>Professional ITR Filing Assistance</h2>
-    <p>Expert guidance on tax regime selection, AIS reconciliation &amp; accurate filing</p>
-    <div class="ca-info">
-      <div class="ca-name" id="contact-ca-name">CA / CS Ankit</div>
-      <div class="ca-qual">DAIS Advisors Private Limited · Tax &amp; Advisory Services</div>
-      <div class="ca-phone" id="contact-ca-phone">📞 +91-XXXXXXXXXX</div>
-    </div>
-    <div class="cta-btn-row">
-      <a id="wa-btn-contact" href="javascript:void(0)" onclick="openWA()" class="btn btn-wa">💬 WhatsApp</a>
-      <a id="call-btn" href="javascript:void(0)" onclick="openCall()" class="btn btn-gold">📞 Call Now</a>
-      <a id="email-btn" href="mailto:office@daisadvisors.com" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.4);">✉️ Email Us</a>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"><div class="card-icon">📋</div><h2>Services Offered</h2></div>
-    <div class="card-body">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ ITR Filing (All Categories)</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ Tax Regime Selection</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ Capital Gains Computation</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ AIS Reconciliation</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ Tax Refund Matters</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ Tax Notice Response</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ NRI Tax Compliance</div>
-        <div style="padding:12px; background:var(--cream); border-radius:8px; font-size:13px;">✅ GST Registration &amp; Returns</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="alert alert-warn" style="margin-top:4px;">
-    📅 <strong>ITR Filing Due Date: 31 July 2026</strong> (subject to extension by IT Department). Don't wait — file early to avoid last-minute issues.
-  </div>
-
-</div><!-- /sec-contact -->
-
-<div class="disclaimer">
-  This tool is for illustrative purposes only and does not constitute professional tax advice.<br>
-  Actual tax liability may vary. Consult a qualified CA for accurate computation and filing.<br>
-  © 2025-26 DAIS Advisors. All rights reserved.
+  </div><!-- /comp-result -->
+</div>
+</div>
+</div>
 </div>
 
-</div><!-- /main -->
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div class="f-copy">&#169; 2025-26 DAIS Advisors Private Limited. All rights reserved.</div>
+    <div class="f-disc">Professional fees are determined based on complexity of income sources, number of transactions, reporting requirements, and level of assistance required.</div>
+  </div>
+</footer>
+
+<!-- STICKY BAR (mobile) -->
+<div class="sticky-bar">
+  <a href="https://api.whatsapp.com/send?phone=918529081017&text=Hi%2C%20I%20need%20help%20with%20ITR%20filing." class="sticky-wa">&#128172; WhatsApp Us</a>
+  <a href="tel:+918529081017" class="sticky-call">&#128222; Call Now</a>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="mOverlay">
+  <div class="modal">
+    <div class="m-hdr"><h2>Get Fee Estimate</h2><button class="m-close" onclick="closeModal()">&#10005;</button></div>
+    <div class="m-body">
+      <div id="mForm">
+        <div class="field-row">
+          <div class="field"><label>Full Name *</label><input type="text" id="m-name" placeholder="Your name"></div>
+          <div class="field"><label>Mobile *</label><input type="tel" id="m-mob" placeholder="+91 XXXXX"></div>
+        </div>
+        
+        <div class="field"><label>Taxpayer Category *</label>
+          <select id="m-cat"><option value="">Select category</option><option>Salaried Employee</option><option>Salary + Capital Gains</option><option>Business / Professional</option><option>Specialized Taxation</option></select>
+        </div>
+        <div class="field"><label>Annual Income Range</label>
+          <select id="m-inc"><option value="">Select range</option><option>Up to &#8377;5 Lakh</option><option>&#8377;5L &ndash; &#8377;10L</option><option>&#8377;10L &ndash; &#8377;25L</option><option>&#8377;25L &ndash; &#8377;50L</option><option>Above &#8377;50L</option></select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Capital Gains?</label><select id="m-cg"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+          <div class="field"><label>GST Registered?</label><select id="m-gst"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+        </div>
+        <div class="field"><label>Foreign Assets / Income?</label><select id="m-fa"><option value="">Select</option><option>Yes</option><option>No</option></select></div>
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:10px;">
+<input type="checkbox" id="consent">
+<span style="font-size:12px;">I agree to be contacted by DAIS Advisors regarding tax filing services.</span>
+</label>
+<button class="btn btn-navy btn-full" style="margin-top:8px" onclick="sendEstimateToWhatsApp()">Get Estimated Fees on WhatsApp</button>
+      </div>
+      <div class="m-result" id="mResult">
+        <div class="ri">&#128202;</div>
+        <h3>Assessment Complete</h3>
+        <p>Your return falls under a <strong>moderate complexity</strong> category. A detailed fee estimate will be shared within 24 hours.</p>
+        <div class="m-badge">&#9989; Request Received</div>
+        <div class="m-btns">
+          <a href="https://api.whatsapp.com/send?phone=918529081017&text=Hi%2C%20I%20submitted%20a%20fee%20estimate%20request." class="btn btn-gold">&#128172; WhatsApp for Quick Reply</a>
+          <button onclick="closeModal()" class="btn btn-outline btn-sm">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-// ── CONFIG — UPDATE THESE ─────────────────────────────────────
-const CA_NAME    = "Team of Expert CA & CS";
-const CA_PHONE   = "+91-8529081017";
-const CA_WA      = "918529081017";
-const CA_EMAIL   = "office@daisadvisors.com";
-document.getElementById('email-btn').href = `mailto:${CA_EMAIL}`;
-// ─────────────────────────────────────────────────────────────
+function toggleNav(){document.getElementById('navLinks').classList.toggle('open')}
+function closeNav(){document.getElementById('navLinks').classList.remove('open')}
 
-// Populate CA details
-document.querySelectorAll('[id$="-ca-name"], [id="contact-ca-name"]').forEach(el => el.textContent = CA_NAME);
-document.querySelectorAll('[id$="-ca-phone"], [id="contact-ca-phone"]').forEach(el => el.textContent = "📞 " + CA_PHONE);
+function getOffset(){
+  var nav=document.querySelector('.nav');
+  var bar=document.querySelector('.nav-tabs-row');
+  return (nav?nav.offsetHeight:0)+(bar?bar.offsetHeight:0);
+}
+function goTab(n){
+  // Toggle tab buttons (0-4 only; tb5 doesn't exist — Tax Comparator is a gold pill)
+  for(var i=0;i<5;i++){
+    var btn=document.getElementById('tb'+i);
+    if(btn) btn.classList.toggle('active', i===n);
+  }
+  // Toggle all panels (0-5)
+  for(var i=0;i<6;i++){
+    var panel=document.getElementById('tp'+i);
+    if(panel) panel.classList.toggle('active', i===n);
+  }
+  // Progress bar (only for tabs 0-4)
+  document.getElementById('progBar').style.width=(n<5?(n+1)/5*100:100)+'%';
+  // Scroll to just above the tabs bar
+  var bar=document.querySelector('.nav-tabs-row');
+  if(bar){
+    var barTop=bar.getBoundingClientRect().top+window.scrollY;
+    window.scrollTo({top:barTop-4,behavior:'smooth'});
+  }
+  closeNav();
+  // Scroll active tab button into view (only for 0-4)
+  var activeBtn=document.getElementById('tb'+n);
+  if(activeBtn) activeBtn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+// Set tabs-bar top dynamically after nav renders
+// Tabs nav is sticky inside hero — no top offset needed
 
-// Clean phone for tel: link (remove spaces, dashes, brackets)
-const cleanPhone = CA_PHONE.replace(/[\s\-().]/g, '');
-const telUrl = `tel:${cleanPhone}`;
-const waUrl  = `https://api.whatsapp.com/send?phone=${CA_WA}&text=Hi%2C%20I%20used%20your%20Tax%20Comparison%20Tool%20and%20need%20help%20with%20my%20ITR.`;
+function openModal(cat){
+  document.getElementById('mOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('mForm').style.display='block';
+  document.getElementById('mResult').style.display='none';
+  if(cat){var s=document.getElementById('m-cat');for(var i=0;i<s.options.length;i++){if(s.options[i].text===cat){s.selectedIndex=i;break;}}}
+}
+function closeModal(){
+  document.getElementById('mOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('mOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
 
-// Wire all buttons
-['wa-btn-result','wa-btn-contact','sticky-wa'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) { el.href = waUrl; el.removeAttribute('target'); }
-});
-['call-btn-result','call-btn','sticky-call'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.href = telUrl;
-});
-
-// ── MOBILE-SAFE CONTACT HELPERS ──────────────────────────────
-let currentWaUrl = waUrl;
-function openWA()   { window.location.href = currentWaUrl; }
-function openCall() { window.location.href = telUrl; }
-
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('sec-' + id).classList.add('active');
-  document.querySelectorAll('.hero-tab').forEach(t => t.classList.remove('active'));
-  const tabs = document.querySelectorAll('.hero-tab');
-  const map = { calculator: 0, slabs: 1, contact: 2 };
-  tabs[map[id]].classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function submitModal(){
+  var n=document.getElementById('m-name').value.trim();
+  var m=document.getElementById('m-mob').value.trim();
+  if(!n||!m){alert('Please enter your Name and Mobile Number.');return;}
+  var msg=encodeURIComponent('Fee Estimate Request\n\nName: '+n+'\nMobile: '+m+'\nCategory: '+(document.getElementById('m-cat').value||'Not specified')+'\nIncome: '+(document.getElementById('m-inc').value||'Not specified')+'\nCapital Gains: '+(document.getElementById('m-cg').value||'Not specified')+'\n\n(Via DAIS ITR Page)');
+  window.location.href='https://api.whatsapp.com/send?phone=918529081017&text='+msg;
+  document.getElementById('mForm').style.display='none';
+  document.getElementById('mResult').style.display='block';
 }
 
-function onInputChange() { /* live auto-calc can be added */ }
-
-function resetForm() {
-  ['salary','hra_exempt','d80c','d80d','d80nps','dother','interest','otherincome']
-    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  document.getElementById('result-section').style.display = 'none';
+function submitContact(){
+  var n=document.getElementById('cf-name').value.trim();
+  var m=document.getElementById('cf-mob').value.trim();
+  if(!n||!m){alert('Please enter your Name and Mobile Number.');return;}
+  var msg=encodeURIComponent('Callback Request\n\nName: '+n+'\nMobile: '+m+'\nCategory: '+(document.getElementById('cf-cat').value||'Not specified')+'\nQuery: '+(document.getElementById('cf-q').value||'ITR Filing')+'\n\n(Via DAIS ITR Website)');
+  window.location.href='https://api.whatsapp.com/send?phone=918529081017&text='+msg;
+  document.getElementById('cfWrap').style.display='none';
+  document.getElementById('cfOk').style.display='block';
 }
 
-// ── HELPERS ───────────────────────────────────────────────────
-const v = id => parseFloat(document.getElementById(id).value) || 0;
-const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+// ── TAX COMPARATOR ──────────────────────────────────────────
+var lastCalc = {};
+var CA_WA = '918529081017';
 
-function calcOldTax(income, age) {
-  let tax = 0;
-  if (age === 'supersenior') {
-    if (income > 1000000) tax = 30 * (income - 1000000) / 100 + 200000 + 0;
-    else if (income > 500000) tax = 20 * (income - 500000) / 100;
-    else tax = 0;
-    // rebuild
-    tax = 0;
-    if (income <= 500000) tax = 0;
-    else if (income <= 1000000) tax = (income - 500000) * 0.20;
-    else tax = 500000 * 0.20 + (income - 1000000) * 0.30;
-  } else if (age === 'senior') {
-    if (income <= 300000) tax = 0;
-    else if (income <= 500000) tax = (income - 300000) * 0.05;
-    else if (income <= 1000000) tax = 10000 + (income - 500000) * 0.20;
-    else tax = 10000 + 100000 + (income - 1000000) * 0.30;
+function fmtINR(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function gv(id){ return parseFloat(document.getElementById(id).value)||0; }
+
+function calcOldTax(inc, age){
+  var t=0;
+  if(age==='supersenior'){
+    if(inc<=500000) t=0;
+    else if(inc<=1000000) t=(inc-500000)*0.20;
+    else t=100000+(inc-1000000)*0.30;
+  } else if(age==='senior'){
+    if(inc<=300000) t=0;
+    else if(inc<=500000) t=(inc-300000)*0.05;
+    else if(inc<=1000000) t=10000+(inc-500000)*0.20;
+    else t=110000+(inc-1000000)*0.30;
   } else {
-    if (income <= 250000) tax = 0;
-    else if (income <= 500000) tax = (income - 250000) * 0.05;
-    else if (income <= 1000000) tax = 12500 + (income - 500000) * 0.20;
-    else tax = 12500 + 100000 + (income - 1000000) * 0.30;
+    if(inc<=250000) t=0;
+    else if(inc<=500000) t=(inc-250000)*0.05;
+    else if(inc<=1000000) t=12500+(inc-500000)*0.20;
+    else t=112500+(inc-1000000)*0.30;
   }
-  return tax;
+  return t;
 }
 
-function calcNewTax(income) {
-  // New regime slabs FY 2025-26
-  let tax = 0;
-  if (income <= 400000) tax = 0;
-  else if (income <= 800000) tax = (income - 400000) * 0.05;
-  else if (income <= 1200000) tax = 20000 + (income - 800000) * 0.10;
-  else if (income <= 1600000) tax = 60000 + (income - 1200000) * 0.15;
-  else if (income <= 2000000) tax = 120000 + (income - 1600000) * 0.20;
-  else if (income <= 2400000) tax = 200000 + (income - 2000000) * 0.25;
-  else tax = 300000 + (income - 2400000) * 0.30;
-  return tax;
+function calcNewTax(inc){
+  var t=0;
+  if(inc<=400000) t=0;
+  else if(inc<=800000) t=(inc-400000)*0.05;
+  else if(inc<=1200000) t=20000+(inc-800000)*0.10;
+  else if(inc<=1600000) t=60000+(inc-1200000)*0.15;
+  else if(inc<=2000000) t=120000+(inc-1600000)*0.20;
+  else if(inc<=2400000) t=200000+(inc-2000000)*0.25;
+  else t=300000+(inc-2400000)*0.30;
+  return t;
 }
 
-function calcHRA(hra_received, basic, rent_paid, metro) {
-  if (!hra_received || !rent_paid || !basic) return 0;
-  const exempt1 = hra_received;
-  const exempt2 = metro === 'yes' ? basic * 0.50 : basic * 0.40;
-  const exempt3 = Math.max(0, rent_paid - basic * 0.10);
-  return Math.min(exempt1, exempt2, exempt3);
+function addSurcharge(tax, inc){
+  var s=0;
+  if(inc>50000000) s=tax*0.37;
+  else if(inc>20000000) s=tax*0.25;
+  else if(inc>10000000) s=tax*0.15;
+  else if(inc>5000000) s=tax*0.10;
+  return tax+s;
 }
 
-function applySurcharge(tax, income) {
-  let sur = 0;
-  if (income > 50000000) sur = tax * 0.37;          // >5Cr
-  else if (income > 20000000) sur = tax * 0.25;     // >2Cr
-  else if (income > 10000000) sur = tax * 0.15;     // >1Cr
-  else if (income > 5000000) sur = tax * 0.10;      // >50L
-  return tax + sur;
-}
+function runCalc(){
+  var salary = gv('c-salary');
+  if(!salary){ alert('Please enter Gross Annual Salary.'); return; }
+  var age    = document.getElementById('c-age').value;
+  var hra    = gv('c-hra');
+  var d80c   = Math.min(gv('c-80c'), 150000);
+  var d80d   = gv('c-80d');
+  var dnps   = Math.min(gv('c-nps'), 50000);
+  var intInc = gv('c-int');
+  var otherI = gv('c-other');
 
-// ── MAIN CALCULATE ────────────────────────────────────────────
-let lastResult = {};
+  var gross  = salary + intInc + otherI;
 
-function calculate() {
-  const salary      = v('salary');
-  const age         = document.getElementById('age').value;
-  const hraExempt   = v('hra_exempt');
-  const d80c        = Math.min(v('d80c'), 150000);
-  const d80d        = v('d80d');
-  const d80nps      = Math.min(v('d80nps'), 50000);
-  const dother      = v('dother');
-  const interest    = v('interest');
-  const otherincome = v('otherincome');
+  // OLD REGIME
+  var stdO   = 50000;
+  var dedO   = stdO + hra + d80c + d80d + dnps;
+  var taxableO = Math.max(0, gross - dedO);
+  var rawO   = calcOldTax(taxableO, age);
+  var rebateO = (taxableO<=500000) ? Math.min(rawO,12500) : 0;
+  rawO = Math.max(0, rawO - rebateO);
+  var surO   = addSurcharge(rawO, taxableO);
+  var cessO  = surO * 0.04;
+  var totalO = surO + cessO;
 
-  if (!salary) { alert('Please enter Gross Annual Salary to continue.'); return; }
-
-  const grossIncome = salary + interest + otherincome;
-
-  // ── OLD REGIME ──
-  const stdDedOld    = 50000;
-  const totalDedOld  = stdDedOld + hraExempt + d80c + d80d + d80nps + dother;
-  const taxableOld   = Math.max(0, grossIncome - totalDedOld);
-  let rawOldTax      = calcOldTax(taxableOld, age);
-
-  // 87A Old regime: rebate up to ₹12,500 if taxable ≤ 5L
-  let rebateOld = 0;
-  if (taxableOld <= 500000) { rebateOld = Math.min(rawOldTax, 12500); }
-  rawOldTax = Math.max(0, rawOldTax - rebateOld);
-  const oldWithSur  = applySurcharge(rawOldTax, taxableOld);
-  const cessOld     = oldWithSur * 0.04;
-  const totalOldTax = oldWithSur + cessOld;
-
-  // Marginal relief old
-  // (simplified: basic 87A already applied)
-
-  // ── NEW REGIME ──
-  const stdDedNew   = 75000;
-  const taxableNew  = Math.max(0, grossIncome - stdDedNew);
-  let rawNewTax     = calcNewTax(taxableNew);
-
-  // 87A New: rebate up to ₹60,000 if taxable ≤ 12L
-  let rebateNew = 0;
-  if (taxableNew <= 1200000) { rebateNew = Math.min(rawNewTax, 60000); }
-
-  // Marginal relief: if taxable slightly above 12L, tax shouldn't exceed income > 12L
-  if (taxableNew > 1200000 && taxableNew <= 1275000) {
-    const marginalRelief = rawNewTax - rebateNew - (taxableNew - 1200000);
-    if (marginalRelief > 0) rebateNew += marginalRelief;
+  // NEW REGIME
+  var stdN   = 75000;
+  var taxableN = Math.max(0, gross - stdN);
+  var rawN   = calcNewTax(taxableN);
+  var rebateN = 0;
+  if(taxableN<=1200000){ rebateN = Math.min(rawN,60000); }
+  // Marginal relief
+  if(taxableN>1200000 && taxableN<=1275000){
+    var mr = rawN - rebateN - (taxableN-1200000);
+    if(mr>0) rebateN += mr;
   }
-  rawNewTax = Math.max(0, rawNewTax - rebateNew);
-  const newWithSur  = applySurcharge(rawNewTax, taxableNew);
-  const cessNew     = newWithSur * 0.04;
-  const totalNewTax = newWithSur + cessNew;
+  rawN = Math.max(0, rawN - rebateN);
+  var surN   = addSurcharge(rawN, taxableN);
+  var cessN  = surN * 0.04;
+  var totalN = surN + cessN;
 
-  // ── COMPARISON ──
-  const saving = totalOldTax - totalNewTax;
-  const newWins = totalNewTax <= totalOldTax;
+  var saving = totalO - totalN;
+  var newWins = totalN <= totalO;
+  var effO = gross>0 ? (totalO/gross*100).toFixed(2) : '0.00';
+  var effN = gross>0 ? (totalN/gross*100).toFixed(2) : '0.00';
 
-  // Save for PDF
-  lastResult = {
-    salary, interest, otherincome, grossIncome,
-    stdDedOld, hraExempt, d80c, d80d, d80nps, dother, totalDedOld,
-    taxableOld, rawOldTax: oldWithSur, cessOld, totalOldTax,
-    stdDedNew, taxableNew, rawNewTax: newWithSur, cessNew, totalNewTax,
-    saving, newWins, age,
-    effOld: grossIncome > 0 ? (totalOldTax / grossIncome * 100).toFixed(2) : '0.00',
-    effNew: grossIncome > 0 ? (totalNewTax / grossIncome * 100).toFixed(2) : '0.00',
-  };
+  lastCalc = {gross:gross,totalO:totalO,totalN:totalN,saving:saving,newWins:newWins,
+    taxableO:taxableO,taxableN:taxableN,stdO:stdO,stdN:stdN,hra:hra,d80c:d80c,d80d:d80d,
+    dnps:dnps,surO:surO,cessO:cessO,surN:surN,cessN:cessN,effO:effO,effN:effN};
 
-  // ── RENDER ──
-  renderResults(lastResult);
+  renderCalc(lastCalc);
 }
 
-function renderResults(r) {
-  const hraExempt = r.hraExempt;
-  document.getElementById('result-section').style.display = 'block';
+function renderCalc(r){
+  document.getElementById('comp-result').style.display='block';
 
   // Banner
-  const banner = document.getElementById('result-banner');
-  if (r.newWins) {
-    banner.className = 'result-banner new-wins animate';
-    banner.innerHTML = `<h2>✅ New Regime is Better for You</h2>
-      <div class="saving-amount">${fmt(Math.abs(r.saving))}</div>
-      <p style="color:var(--success);font-size:14px;margin-top:6px;">Annual tax savings by choosing New Regime</p>`;
-  } else if (r.totalOldTax < r.totalNewTax) {
-    banner.className = 'result-banner old-wins animate';
-    banner.innerHTML = `<h2>📜 Old Regime is Better for You</h2>
-      <div class="saving-amount">${fmt(Math.abs(r.saving))}</div>
-      <p style="color:var(--warn);font-size:14px;margin-top:6px;">Annual tax savings by sticking to Old Regime</p>`;
+  var banner = document.getElementById('comp-banner');
+  if(r.totalN<=r.totalO){
+    banner.className='comp-result-banner new-wins';
+    banner.innerHTML='<h3>&#10003; New Regime is Better for You</h3><div class="save-amt">'+fmtINR(Math.abs(r.saving))+'</div><p style="color:var(--green);font-size:13px;margin-top:4px">Annual savings by choosing New Regime</p>';
   } else {
-    banner.className = 'result-banner new-wins animate';
-    banner.innerHTML = `<h2>⚖️ Both Regimes Give Same Tax</h2>
-      <div class="saving-amount">${fmt(0)}</div>
-      <p style="font-size:14px;margin-top:6px;">No difference — choose New Regime for simplicity</p>`;
+    banner.className='comp-result-banner old-wins';
+    banner.innerHTML='<h3>&#128220; Old Regime is Better for You</h3><div class="save-amt">'+fmtINR(Math.abs(r.saving))+'</div><p style="color:#D97706;font-size:13px;margin-top:4px">Annual savings by sticking to Old Regime</p>';
   }
 
   // Regime cards
-  const cardOld = document.getElementById('card-old');
-  const cardNew = document.getElementById('card-new');
-  const winner = r.totalOldTax < r.totalNewTax ? 'old' : 'new';
-  cardOld.className = 'regime-card ' + (winner === 'old' ? 'winner' : 'loser');
-  cardNew.className = 'regime-card ' + (winner === 'new' ? 'winner' : 'loser');
-  document.getElementById('tax-old').textContent = fmt(r.totalOldTax);
-  document.getElementById('tax-new').textContent = fmt(r.totalNewTax);
-  document.getElementById('eff-old').textContent = `Effective rate: ${r.effOld}%`;
-  document.getElementById('eff-new').textContent = `Effective rate: ${r.effNew}%`;
+  var winner = r.totalN<=r.totalO ? 'new' : 'old';
+  document.getElementById('rc-old').className='regime-card '+(winner==='old'?'winner':'loser');
+  document.getElementById('rc-new').className='regime-card '+(winner==='new'?'winner':'loser');
+  document.getElementById('rt-old').textContent=fmtINR(r.totalO);
+  document.getElementById('rt-new').textContent=fmtINR(r.totalN);
+  document.getElementById('re-old').textContent='Effective: '+r.effO+'%';
+  document.getElementById('re-new').textContent='Effective: '+r.effN+'%';
 
-  // Breakdown table
-  const rows = [
-    ['Gross Income', fmt(r.grossIncome), fmt(r.grossIncome)],
-    ['Standard Deduction', `(${fmt(r.stdDedOld)})`, `(${fmt(r.stdDedNew)})`],
-    ['HRA Exemption', hraExempt > 0 ? `(${fmt(hraExempt)})` : '—', 'N/A'],
-    ['80C Deductions', r.d80c > 0 ? `(${fmt(r.d80c)})` : '—', 'N/A'],
-    ['80D (Health Ins.)', r.d80d > 0 ? `(${fmt(r.d80d)})` : '—', 'N/A'],
-    ['80CCD(1B) NPS', r.d80nps > 0 ? `(${fmt(r.d80nps)})` : '—', 'N/A'],
-    ['Other Deductions', r.dother > 0 ? `(${fmt(r.dother)})` : '—', 'N/A'],
-    ['<strong>Taxable Income</strong>', `<strong>${fmt(r.taxableOld)}</strong>`, `<strong>${fmt(r.taxableNew)}</strong>`],
-    ['Income Tax', fmt(r.rawOldTax), fmt(r.rawNewTax)],
-    ['Health & Education Cess (4%)', fmt(r.cessOld), fmt(r.cessNew)],
-    ['<strong>Total Tax Liability</strong>', `<strong style="color:var(--navy)">${fmt(r.totalOldTax)}</strong>`, `<strong style="color:var(--navy)">${fmt(r.totalNewTax)}</strong>`],
-    ['<strong>Take-Home (Post-Tax)</strong>', `<strong>${fmt(r.grossIncome - r.totalOldTax)}</strong>`, `<strong>${fmt(r.grossIncome - r.totalNewTax)}</strong>`],
+  // Breakdown
+  var rows=[
+    ['Gross Income',fmtINR(r.gross),fmtINR(r.gross)],
+    ['Standard Deduction','('+fmtINR(r.stdO)+')','('+fmtINR(r.stdN)+')'],
+    ['HRA Exemption',r.hra>0?'('+fmtINR(r.hra)+')':'NIL','N/A'],
+    ['80C Deductions',r.d80c>0?'('+fmtINR(r.d80c)+')':'NIL','N/A'],
+    ['80D Health Ins.',r.d80d>0?'('+fmtINR(r.d80d)+')':'NIL','N/A'],
+    ['NPS 80CCD(1B)',r.dnps>0?'('+fmtINR(r.dnps)+')':'NIL','N/A'],
+    ['Taxable Income',fmtINR(r.taxableO),fmtINR(r.taxableN)],
+    ['Income Tax',fmtINR(r.surO),fmtINR(r.surN)],
+    ['Cess (4%)',fmtINR(r.cessO),fmtINR(r.cessN)],
+    ['Total Tax',fmtINR(r.totalO),fmtINR(r.totalN)],
+    ['Take-Home',fmtINR(r.gross-r.totalO),fmtINR(r.gross-r.totalN)]
   ];
-  document.getElementById('breakdown-body').innerHTML =
-    rows.map(([a, b, c]) => `<tr><td>${a}</td><td class="text-right">${b}</td><td class="text-right">${c}</td></tr>`).join('');
+  document.getElementById('comp-tbody').innerHTML=rows.map(function(row){
+    return '<tr><td>'+row[0]+'</td><td>'+row[1]+'</td><td>'+row[2]+'</td></tr>';
+  }).join('');
 
-  // Update WA message with result
-  const waMsg = encodeURIComponent(`Hi ${CA_NAME}, I used your Tax Comparison Tool.\n\nGross Income: ${fmt(r.grossIncome)}\nOld Regime Tax: ${fmt(r.totalOldTax)}\nNew Regime Tax: ${fmt(r.totalNewTax)}\nRecommended: ${r.totalNewTax <= r.totalOldTax ? 'New Regime' : 'Old Regime'}\n\nI need help filing my ITR. Please contact me.`);
-  const updatedWa = `https://api.whatsapp.com/send?phone=${CA_WA}&text=${waMsg}`;
-  currentWaUrl = updatedWa;
-  ['wa-btn-result','wa-btn-contact','sticky-wa'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.href = updatedWa;
-  });
-
-  document.getElementById('result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Scroll result into view
+  setTimeout(function(){
+    document.getElementById('comp-result').scrollIntoView({behavior:'smooth',block:'start'});
+  }, 100);
 }
 
-// ── PDF DOWNLOAD ──────────────────────────────────────────────
-async function downloadPDF() {
-  const r = lastResult;
-  if (!r.grossIncome) { alert('Please calculate first.'); return; }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  const W = 210, margin = 18;
-
-  // Header bar
-  doc.setFillColor(5, 61, 112);
-  doc.rect(0, 0, W, 30, 'F');
-  doc.setTextColor(255, 192, 0);
-  doc.setFontSize(16);
-  doc.setFont('helvetica', 'bold');
-  doc.text('DAIS ADVISORS', margin, 12);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(255, 255, 255);
-  doc.text('Tax Regime Comparison — FY 2025-26 / AY 2026-27', margin, 20);
-  doc.text(new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }), W - margin, 20, { align: 'right' });
-
-  // Gold bar
-  doc.setFillColor(255, 192, 0);
-  doc.rect(0, 30, W, 3, 'F');
-
-  let y = 42;
-  doc.setTextColor(5, 61, 112);
-  doc.setFontSize(13);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Income Tax Computation Summary', margin, y); y += 10;
-
-  // Recommendation box
-  const recText = r.totalNewTax <= r.totalOldTax
-    ? `RECOMMENDED: NEW REGIME  |  Annual Saving: ${fmt(Math.abs(r.saving))}`
-    : `RECOMMENDED: OLD REGIME  |  Annual Saving: ${fmt(Math.abs(r.saving))}`;
-  doc.setFillColor(r.totalNewTax <= r.totalOldTax ? 220 : 254, r.totalNewTax <= r.totalOldTax ? 252 : 243, r.totalNewTax <= r.totalOldTax ? 231 : 199);
-  doc.roundedRect(margin, y, W - margin * 2, 10, 2, 2, 'F');
-  doc.setTextColor(r.totalNewTax <= r.totalOldTax ? 22 : 146, r.totalNewTax <= r.totalOldTax ? 163 : 64, r.totalNewTax <= r.totalOldTax ? 74 : 2);
-  doc.setFontSize(9);
-  doc.text(recText, W / 2, y + 6.5, { align: 'center' });
-  y += 16;
-
-  // Table header
-  const cols = [margin, 90, 150];
-  const rowH = 8;
-  doc.setFillColor(5, 61, 112);
-  doc.rect(margin, y, W - margin * 2, rowH, 'F');
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(8.5);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Particulars', cols[0] + 2, y + 5.5);
-  doc.text('Old Regime', cols[1], y + 5.5, { align: 'right' });
-  doc.text('New Regime', cols[2], y + 5.5, { align: 'right' });
-  y += rowH;
-
-  const tableRows = [
-    ['Gross Income', fmt(r.grossIncome), fmt(r.grossIncome)],
-    ['Standard Deduction', `(${fmt(r.stdDedOld)})`, `(${fmt(r.stdDedNew)})`],
-    ['HRA Exemption', r.hraExempt > 0 ? `(${fmt(r.hraExempt)})` : 'NIL', 'N/A'],
-    ['80C Deductions', r.d80c > 0 ? `(${fmt(r.d80c)})` : 'NIL', 'N/A'],
-    ['80D Health Insurance', r.d80d > 0 ? `(${fmt(r.d80d)})` : 'NIL', 'N/A'],
-    ['80CCD(1B) NPS', r.d80nps > 0 ? `(${fmt(r.d80nps)})` : 'NIL', 'N/A'],
-    ['Other Deductions', r.dother > 0 ? `(${fmt(r.dother)})` : 'NIL', 'N/A'],
-    ['Taxable Income', fmt(r.taxableOld), fmt(r.taxableNew)],
-    ['Income Tax (before cess)', fmt(r.rawOldTax), fmt(r.rawNewTax)],
-    ['Health & Education Cess (4%)', fmt(r.cessOld), fmt(r.cessNew)],
-    ['TOTAL TAX LIABILITY', fmt(r.totalOldTax), fmt(r.totalNewTax)],
-    ['Effective Tax Rate', r.effOld + '%', r.effNew + '%'],
-    ['Take-Home (Post-Tax)', fmt(r.grossIncome - r.totalOldTax), fmt(r.grossIncome - r.totalNewTax)],
-  ];
-
-  tableRows.forEach((row, i) => {
-    const isBold = i >= 10;
-    if (i % 2 === 0) { doc.setFillColor(250, 247, 242); doc.rect(margin, y, W - margin * 2, rowH, 'F'); }
-    doc.setTextColor(isBold ? 5 : 26, isBold ? 61 : 26, isBold ? 112 : 46);
-    doc.setFont('helvetica', isBold ? 'bold' : 'normal');
-    doc.setFontSize(8);
-    doc.text(row[0], cols[0] + 2, y + 5.5);
-    doc.text(row[1], cols[1], y + 5.5, { align: 'right' });
-    doc.text(row[2], cols[2], y + 5.5, { align: 'right' });
-    y += rowH;
+function resetCalc(){
+  ['c-salary','c-hra','c-80c','c-80d','c-nps','c-int','c-other'].forEach(function(id){
+    document.getElementById(id).value='';
   });
-
-  y += 8;
-  // Footer
-  doc.setFillColor(5, 61, 112);
-  doc.rect(0, 275, W, 22, 'F');
-  doc.setTextColor(255, 192, 0);
-  doc.setFontSize(9);
-  doc.setFont('helvetica', 'bold');
-  doc.text(CA_NAME + '  |  DAIS Advisors', margin, 283);
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.text(CA_PHONE + '  |  tax.daisadvisors.com', margin, 291);
-  doc.text('This document is for informational purposes only. Not professional tax advice.', W / 2, 291, { align: 'center' });
-
-  doc.save('DAIS_Tax_Comparison_FY2025-26.pdf');
+  document.getElementById('comp-result').style.display='none';
 }
 
-// ── LEAD FORM ─────────────────────────────────────────────────
-function submitLead() {
-  const name   = document.getElementById('lead-name').value.trim();
-  const mobile = document.getElementById('lead-mobile').value.trim();
-  if (!name || !mobile) { alert('Please enter your Name and Mobile Number.'); return; }
-
-  const email = document.getElementById('lead-email').value.trim();
-  const query = document.getElementById('lead-query').value.trim();
-
-  // WhatsApp lead notification to CA
-  const msg = encodeURIComponent(`📥 New Consultation Request\n\nName: ${name}\nMobile: ${mobile}\nEmail: ${email || 'Not provided'}\nQuery: ${query || 'ITR Filing'}\n\n(Via DAIS Tax Tool)`);
-  window.open(`https://wa.me/${CA_WA}?text=${msg}`, '_blank');
-
-  document.getElementById('lead-form-wrap').style.display = 'none';
-  document.getElementById('lead-success').style.display = 'block';
+function compWA(){
+  var msg = 'Hi, I used the DAIS Tax Comparator.\n\n';
+  if(lastCalc.gross){
+    msg += 'Gross Income: '+fmtINR(lastCalc.gross)+'\n';
+    msg += 'Old Regime Tax: '+fmtINR(lastCalc.totalO)+'\n';
+    msg += 'New Regime Tax: '+fmtINR(lastCalc.totalN)+'\n';
+    msg += 'Recommended: '+(lastCalc.totalN<=lastCalc.totalO?'New Regime':'Old Regime')+'\n\n';
+  }
+  msg += 'I need help filing my ITR. Please contact me.';
+  window.location.href='https://api.whatsapp.com/send?phone='+CA_WA+'&text='+encodeURIComponent(msg);
 }
 </script>
-<!-- STICKY BOTTOM BAR — always visible -->
-<div class="sticky-bar">
-  <a id="sticky-wa" href="javascript:void(0)" onclick="openWA()" class="sticky-wa">💬 WhatsApp Us</a>
-  <a id="sticky-call" href="javascript:void(0)" onclick="openCall()" class="sticky-call">📞 Call Now</a>
-</div>
 
+<script>
+function sendEstimateToWhatsApp(){
+    const name = document.getElementById("m-name")?.value || "";
+    const mobile = document.getElementById("m-mob")?.value || "";
+    const category = document.getElementById("m-cat")?.value || "";
+    const income = document.getElementById("m-inc")?.value || "";
+    const capitalGains = document.getElementById("m-cg")?.value || "";
+    const gst = document.getElementById("m-gst")?.value || "";
+    const foreignAssets = document.getElementById("m-fa")?.value || "";
+
+    if(!name || !mobile || !category){
+        alert("Please fill Name, Mobile and Taxpayer Category.");
+        return;
+    }
+
+    if(document.getElementById("consent") && !document.getElementById("consent").checked){
+        alert("Please provide consent.");
+        return;
+    }
+
+    const message = `📋 New Fee Estimate Request
+
+👤 Name: ${name}
+📱 Mobile: ${mobile}
+🧾 Category: ${category}
+💰 Income Range: ${income}
+📈 Capital Gains: ${capitalGains}
+🏢 GST Registered: ${gst}
+🌍 Foreign Assets/Income: ${foreignAssets}
+
+Please share estimated professional fees.`;
+
+    const whatsappURL = `https://wa.me/918529081017?text=${encodeURIComponent(message)}`;
+    window.open(whatsappURL,'_blank');
+}
+</script>
 </body>
 </html>
